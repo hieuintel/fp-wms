@@ -21,14 +21,14 @@ public class Core {
     public static boolean execute_SQL(Connection conn, String sql) {
         try {
             Statement stmt = conn.createStatement();
-            boolean check =  stmt.execute(sql);
+            boolean check = stmt.execute(sql);
             return check;
 
         } catch (SQLException ex) {
             Logger.getLogger(Core.class.getName()).log(Level.SEVERE, null, ex);
-            return true;
+            return false;
         }
-        
+
     }
 
     public static ResultSet run_SQL(Connection conn, String sql) {
@@ -42,6 +42,7 @@ public class Core {
 
         } catch (SQLException ex) {
             Logger.getLogger(Core.class.getName()).log(Level.SEVERE, null, ex);
+
         }
         return null;
     }

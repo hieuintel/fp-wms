@@ -24,10 +24,10 @@ public class Test {
     /**
      * @param args the command line arguments
      */
-    public static String GEOSERVERHOST = "192.168.10.143";
-    public static String OSUSER = "GT2";
-    public static String OSPASS = "h";
-    public static String GEOSERVERDATAPATH = "smb://" + GEOSERVERHOST + "/data/"; //Apply for GeoServer intall on Windows
+    public static String GEOSERVERHOST = "165.132.139.249";
+    public static String OSUSER = "geoserver";
+    public static String OSPASS = "P@$$w0rd00";
+    public static String GEOSERVERDATAPATH = "smb://" + GEOSERVERHOST +"/Data2/"; //Apply for GeoServer intall on Windows
 
     public static String TYPEGEOSERVERCONNECTION = "remote";
 
@@ -36,26 +36,26 @@ public class Test {
         if (TYPEGEOSERVERCONNECTION == "remote") {
             NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication(GEOSERVERHOST, OSUSER, OSPASS);
             SmbFile dir = new SmbFile(GEOSERVERDATAPATH, auth);
-//            for (SmbFile f : dir.listFiles()) {
-//                System.out.println(f.getName());
-//            }
-            File fileSource = new File("C:\\Agri\\2000\\korea.20000101_max.xml");
-            SmbFile smbFileTarget = new SmbFile(GEOSERVERDATAPATH + "/korea.20000101_max.xml", auth);
-            // input and output stream
-            FileInputStream fis = new FileInputStream(fileSource);
-            SmbFileOutputStream smbfos = new SmbFileOutputStream(smbFileTarget);
-            // writing data
-            try {
-                // 16 kb
-                final byte[] b = new byte[16 * 1024];
-                int read = 0;
-                while ((read = fis.read(b, 0, b.length)) > 0) {
-                    smbfos.write(b, 0, read);
-                }
-            } finally {
-                fis.close();
-                smbfos.close();
+            for (SmbFile f : dir.listFiles()) {
+                System.out.println(f.getName());
             }
+//            File fileSource = new File("E:\\Projects\\Yonsei\\Agriculture\\Deploy Argi\\Quick Help.txt");
+//            SmbFile smbFileTarget = new SmbFile(GEOSERVERDATAPATH + "/Quick Help.txt", auth);
+//            // input and output stream
+//            FileInputStream fis = new FileInputStream(fileSource);
+//            SmbFileOutputStream smbfos = new SmbFileOutputStream(smbFileTarget);
+//            // writing data
+//            try {
+//                // 16 kb
+//                final byte[] b = new byte[16 * 1024];
+//                int read = 0;
+//                while ((read = fis.read(b, 0, b.length)) > 0) {
+//                    smbfos.write(b, 0, read);
+//                }
+//            } finally {
+//                fis.close();
+//                smbfos.close();
+//            }
         } else if (TYPEGEOSERVERCONNECTION == "local") {
 
         }

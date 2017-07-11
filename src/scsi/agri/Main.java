@@ -9,32 +9,43 @@ import it.geosolutions.geoserver.rest.GeoServerRESTReader;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.JTextPane;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
+import static scsi.agri.Main.tablecounty;
 import static scsi.agri.Publisher.RESTPW;
 import static scsi.agri.Publisher.RESTURL;
 import static scsi.agri.Publisher.RESTUSER;
+import static scsi.agri.UpdateIndexTable.get_valueIndex;
 import scsi.db.*;
 import static scsi.db.Config.hostPG;
 import static scsi.db.Config.portPG;
 import static scsi.db.Config.userPG;
 import static scsi.db.Config.pwPG;
 import static scsi.db.Config.connectURLPG;
+import static scsi.db.Core.run_SQL;
 
 /**
  *
@@ -99,19 +110,19 @@ public class Main extends javax.swing.JFrame {
         btupdatemosaictable = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbupdatemosaicinfor = new javax.swing.JTextPane();
-        btclean_updatemosaictableinfor = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tbgenerateXMLinfor = new javax.swing.JTextPane();
+        jPanel10 = new javax.swing.JPanel();
+        btgenerateXML = new javax.swing.JButton();
+        jPanel11 = new javax.swing.JPanel();
+        tbsaveXMLto = new javax.swing.JTextField();
+        tbxmlsource = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
-        tbxmlsource = new javax.swing.JTextField();
-        tbsaveXMLto = new javax.swing.JTextField();
         btsetsourceXML = new javax.swing.JButton();
         btsetdestinationXML = new javax.swing.JButton();
-        btgenerateXML = new javax.swing.JButton();
-        btclean_generateinfo = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
@@ -120,8 +131,20 @@ public class Main extends javax.swing.JFrame {
         btpublishLayer = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
         tbPublishinfo = new javax.swing.JTextPane();
-        btcleanpublishinfor = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        tbcreateindexinfor = new javax.swing.JTextPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tabletype = new javax.swing.JTable();
+        btgetlisttype = new javax.swing.JButton();
+        btgetlistcounty = new javax.swing.JButton();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        tablecounty = new javax.swing.JTable();
+        btcreateindex = new javax.swing.JButton();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
+        checkoverwriteindex = new javax.swing.JCheckBox();
 
         jButton2.setText("Run");
 
@@ -403,15 +426,14 @@ public class Main extends javax.swing.JFrame {
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(17, 17, 17)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel21)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel21)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(17, 17, 17)
+                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -425,7 +447,7 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 171, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 212, Short.MAX_VALUE)
                 .addComponent(jLabel21)
                 .addContainerGap())
         );
@@ -446,13 +468,6 @@ public class Main extends javax.swing.JFrame {
 
         jScrollPane2.setViewportView(tbupdatemosaicinfor);
 
-        btclean_updatemosaictableinfor.setText("Clean");
-        btclean_updatemosaictableinfor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btclean_updatemosaictableinforActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -460,9 +475,7 @@ public class Main extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btupdatemosaictable)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btclean_updatemosaictableinfor)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 634, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 699, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addContainerGap())
             .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -473,10 +486,9 @@ public class Main extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(btupdatemosaictable)
-                    .addComponent(btclean_updatemosaictableinfor))
+                    .addComponent(btupdatemosaictable))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Step 1", jPanel3);
@@ -485,6 +497,31 @@ public class Main extends javax.swing.JFrame {
         jLabel2.setText("Generate XML config file");
 
         jScrollPane3.setViewportView(tbgenerateXMLinfor);
+
+        btgenerateXML.setText("Run");
+        btgenerateXML.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btgenerateXMLActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btgenerateXML, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(btgenerateXML, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE))
+        );
+
+        jPanel11.setForeground(new java.awt.Color(204, 204, 204));
 
         jLabel16.setText("Source");
 
@@ -504,77 +541,72 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        btgenerateXML.setText("Run");
-        btgenerateXML.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btgenerateXMLActionPerformed(evt);
-            }
-        });
+        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
+        jPanel11.setLayout(jPanel11Layout);
+        jPanel11Layout.setHorizontalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel16)
+                    .addComponent(jLabel17))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(tbsaveXMLto, javax.swing.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE)
+                    .addComponent(tbxmlsource))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btsetsourceXML)
+                    .addComponent(btsetdestinationXML))
+                .addContainerGap())
+        );
 
-        btclean_generateinfo.setText("Clean");
-        btclean_generateinfo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btclean_generateinfoActionPerformed(evt);
-            }
-        });
+        jPanel11Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel16, jLabel17});
+
+        jPanel11Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {tbsaveXMLto, tbxmlsource});
+
+        jPanel11Layout.setVerticalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(tbxmlsource, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel16)
+                    .addComponent(btsetsourceXML))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(btsetdestinationXML)
+                    .addComponent(tbsaveXMLto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel17)))
+        );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel17)
-                        .addGap(18, 18, 18)
-                        .addComponent(tbsaveXMLto, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel16)
-                        .addGap(18, 18, 18)
-                        .addComponent(tbxmlsource, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(11, 11, 11)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btsetsourceXML, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btsetdestinationXML))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btgenerateXML, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btclean_generateinfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(60, 60, 60)
+                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 164, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addContainerGap())
+            .addComponent(jScrollPane3)
         );
-
-        jPanel4Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel16, jLabel17});
-
-        jPanel4Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {tbsaveXMLto, tbxmlsource});
-
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(1, 1, 1)
-                .addComponent(jLabel2)
-                .addGap(354, 354, 354))
-            .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(btsetsourceXML)
-                            .addComponent(tbxmlsource, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel16))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(btsetdestinationXML)
-                            .addComponent(tbsaveXMLto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel17)))
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(btgenerateXML, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btclean_generateinfo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap()
+                        .addComponent(jLabel2))
+                    .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE))
         );
+
+        jPanel4Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jPanel10, jPanel11});
 
         jTabbedPane2.addTab("Step 2", jPanel4);
 
@@ -599,29 +631,20 @@ public class Main extends javax.swing.JFrame {
 
         jScrollPane4.setViewportView(tbPublishinfo);
 
-        btcleanpublishinfor.setText("Clean");
-        btcleanpublishinfor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btcleanpublishinforActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap(41, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tbpathtoXML, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btsetXMLdata, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
                 .addComponent(btpublishLayer, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btcleanpublishinfor)
-                .addGap(23, 23, 23)
+                .addGap(88, 88, 88)
                 .addComponent(jLabel3)
                 .addContainerGap())
             .addComponent(jScrollPane4)
@@ -631,14 +654,13 @@ public class Main extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(btcleanpublishinfor)
                     .addComponent(btpublishLayer)
                     .addComponent(btsetXMLdata)
                     .addComponent(tbpathtoXML, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel20)
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE))
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Step 3", jPanel5);
@@ -647,7 +669,7 @@ public class Main extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane2)
+            .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 874, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -658,15 +680,141 @@ public class Main extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Publish Layer", jPanel1);
 
+        jScrollPane5.setViewportView(tbcreateindexinfor);
+
+        tabletype.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "check", "id", "code", "name"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tabletype);
+
+        btgetlisttype.setText("Get");
+        btgetlisttype.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btgetlisttypeActionPerformed(evt);
+            }
+        });
+
+        btgetlistcounty.setText("Get");
+        btgetlistcounty.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btgetlistcountyActionPerformed(evt);
+            }
+        });
+
+        tablecounty.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "check", "id_0", "id_1", "name_1"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Boolean.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        tablecounty.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablecountyMouseClicked(evt);
+            }
+        });
+        jScrollPane6.setViewportView(tablecounty);
+
+        btcreateindex.setText("Create Index");
+        btcreateindex.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btcreateindexActionPerformed(evt);
+            }
+        });
+
+        jLabel22.setText("List of data");
+
+        jLabel23.setText("List of county");
+
+        jLabel24.setForeground(new java.awt.Color(0, 0, 255));
+        jLabel24.setText("id_0: countryid;  id_1: countyid");
+
+        checkoverwriteindex.setText("Overwrite");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 874, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(checkoverwriteindex)
+                        .addGap(18, 18, 18)
+                        .addComponent(btcreateindex))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                            .addComponent(btgetlisttype)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel22))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(btgetlistcounty)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel23)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel24)))
+                .addContainerGap(493, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                    .addGap(392, 392, 392)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 482, Short.MAX_VALUE)))
         );
+
+        jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btgetlistcounty, btgetlisttype});
+
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 408, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btgetlisttype)
+                    .addComponent(jLabel22))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btgetlistcounty)
+                    .addComponent(jLabel23)
+                    .addComponent(jLabel24))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(11, 11, 11)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btcreateindex, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(checkoverwriteindex))
+                .addContainerGap())
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Create Index", jPanel2);
@@ -675,7 +823,7 @@ public class Main extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 879, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -689,6 +837,7 @@ public class Main extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //test PG connection
     private void bttestPGconnectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttestPGconnectionActionPerformed
         // TODO add your handling code here:
         hostPG = tbhostPG.getText();
@@ -696,7 +845,7 @@ public class Main extends javax.swing.JFrame {
         userPG = tbuserPG.getText();
         pwPG = tbpassPG.getText();
         connectURLPG = "jdbc:postgresql://" + hostPG + ":" + portPG + "/";
-        String connectURLPostgreSQL = Config.connectURLPG + "postgres";
+        String connectURLPostgreSQL = Config.connectURLPG ;//+ "postgres";
         Connection conntest = Connect.getConnectPostgreSQL(connectURLPostgreSQL, Config.userPG, Config.pwPG);
         if (conntest != null) {
             JOptionPane.showMessageDialog(this, "Connect success!");
@@ -705,6 +854,7 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_bttestPGconnectionActionPerformed
 
+    //test geoserver connection
     private void bttestGSconnectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttestGSconnectionActionPerformed
         RESTURL = "http://" + tbhostGS.getText() + ":" + tbportGS.getText() + "/geoserver";
         RESTUSER = tbuserGS.getText();
@@ -725,19 +875,21 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_bttestGSconnectionActionPerformed
 
+    //update mosaic table
     private void btupdatemosaictableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btupdatemosaictableActionPerformed
         // TODO add your handling code here:
         Integer startyear = Integer.valueOf(cbstartyear.getSelectedItem().toString());
         Integer endyear = Integer.valueOf(cbendyear.getSelectedItem().toString());
         if (endyear < startyear) {
             JOptionPane.showMessageDialog(this, "Wrong range " + startyear + "-" + endyear);
-            return;
         } else {
+            tbupdatemosaicinfor.setText("");
             btupdatemosaictable.setEnabled(false);
             ThreadUpdateMosaicTable task1 = new ThreadUpdateMosaicTable("Update Mosaic Table Task1");
         }
     }//GEN-LAST:event_btupdatemosaictableActionPerformed
 
+    //Form opened event
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
         //btupdatemosaictable.setEnabled(false);
@@ -752,16 +904,34 @@ public class Main extends javax.swing.JFrame {
         this.setLocation(x, y);
         this.setResizable(false);
 
+        //tabletype.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        tabletype.getColumnModel().getColumn(0).setPreferredWidth(50);
+        tabletype.getColumnModel().getColumn(1).setPreferredWidth(50);
+        tabletype.getColumnModel().getColumn(2).setPreferredWidth(50);
+        tabletype.getColumnModel().getColumn(3).setPreferredWidth(200);
+
+        tablecounty.getColumnModel().getColumn(0).setPreferredWidth(50);
+        tablecounty.getColumnModel().getColumn(1).setPreferredWidth(50);
+        tablecounty.getColumnModel().getColumn(2).setPreferredWidth(50);
+        tablecounty.getColumnModel().getColumn(3).setPreferredWidth(200);
+
+        tablecountycheclAll();
+        tabletypecheclAll();
+        DefaultTableModel model = (DefaultTableModel) tabletype.getModel();
+        while (tabletype.getRowCount() > 0) {
+            model.removeRow(0);
+        }
+        model = (DefaultTableModel) tablecounty.getModel();
+        while (tablecounty.getRowCount() > 0) {
+            model.removeRow(0);
+        }
+
         appendToPane(Main.tbPublishinfo, "Please note that, after generation XML data, we have a folder named \"data\" " + "\n", Color.RED);
         appendToPane(Main.tbPublishinfo, "Please sure that, you copied the \"data\" folder to GeoServer folder before continute" + "\n", Color.RED);
         appendToPane(Main.tbPublishinfo, "Please refer to the help to know exactly how to copy the \"data\" folder" + "\n", Color.RED);
     }//GEN-LAST:event_formWindowOpened
 
-    private void btclean_updatemosaictableinforActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btclean_updatemosaictableinforActionPerformed
-        // TODO add your handling code here:
-        tbupdatemosaicinfor.setText("");
-    }//GEN-LAST:event_btclean_updatemosaictableinforActionPerformed
-
+    //set source XML - XML file template for generate xml configuration
     private void btsetsourceXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btsetsourceXMLActionPerformed
         // TODO add your handling code here:
         JFileChooser folderChooser = new JFileChooser();
@@ -794,6 +964,7 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btsetsourceXMLActionPerformed
 
+    //set path to save XML configuration file
     private void btsetdestinationXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btsetdestinationXMLActionPerformed
         // TODO add your handling code here:
         JFileChooser folderChooser = new JFileChooser();
@@ -821,14 +992,13 @@ public class Main extends javax.swing.JFrame {
                     saveXMLto = tbsaveXMLto.getText();
                     if ("".equals(saveXMLto)) {
                         JOptionPane.showMessageDialog(this, "Please set folder to store XML file");
-                        return;
                     } else {
                         Integer startyear = Integer.valueOf(cbstartyear.getSelectedItem().toString());
                         Integer endyear = Integer.valueOf(cbendyear.getSelectedItem().toString());
                         if (endyear < startyear) {
                             JOptionPane.showMessageDialog(this, "Wrong range " + startyear + "-" + endyear);
-                            return;
                         } else {
+                            tbgenerateXMLinfor.setText("");
                             btgenerateXML.setEnabled(false);
                             ThreadGenerateXML task1 = new ThreadGenerateXML("Generate XML Task1");
                         }
@@ -836,23 +1006,16 @@ public class Main extends javax.swing.JFrame {
 
                 } else {
                     JOptionPane.showMessageDialog(this, "Could not find mapping.pgraster.xml.inc file");
-                    return;
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "Could not find connect.pgraster.xml.inc file");
-                return;
             }
         } else {
             JOptionPane.showMessageDialog(this, "Could not find imagemosaicjdbc.xml file");
-            return;
         }
     }//GEN-LAST:event_btgenerateXMLActionPerformed
 
-    private void btclean_generateinfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btclean_generateinfoActionPerformed
-        // TODO add your handling code here:
-        tbgenerateXMLinfor.setText("");
-    }//GEN-LAST:event_btclean_generateinfoActionPerformed
-
+    //set folder contained XML configuration file to publish layer
     private void btsetXMLdataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btsetXMLdataActionPerformed
         // TODO add your handling code here:
         JFileChooser folderChooser = new JFileChooser();
@@ -867,6 +1030,7 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btsetXMLdataActionPerformed
 
+    //publish layer follow XML file
     private void btpublishLayerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btpublishLayerActionPerformed
         // TODO add your handling code here:
         String pathtoXMLdata = tbpathtoXML.getText();
@@ -876,18 +1040,214 @@ public class Main extends javax.swing.JFrame {
             RESTURL = "http://" + tbhostGS.getText() + ":" + tbportGS.getText() + "/geoserver";
             RESTUSER = tbuserGS.getText();
             RESTPW = tbpassGS.getText();
-            btupdatemosaictable.setEnabled(false);
-            ThreadPublishLayer task1 = new ThreadPublishLayer("Publish Layer Task1");
+            try {
+                // TODO add your handling code here:
+                GeoServerRESTReader reader = new GeoServerRESTReader(RESTURL, RESTUSER, RESTPW);
+                boolean check = reader.existGeoserver();
+                if (check) {
+                    tbPublishinfo.setText("");
+                    btpublishLayer.setEnabled(false);
+                    ThreadPublishLayer task1 = new ThreadPublishLayer("Publish Layer Task1");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Could not connect to the GeoServer host");
+                }
+
+            } catch (MalformedURLException ex) {
+                JOptionPane.showMessageDialog(this, "Could not connect to the GeoServer host");
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
     }//GEN-LAST:event_btpublishLayerActionPerformed
 
-    private void btcleanpublishinforActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btcleanpublishinforActionPerformed
+    //get list type of data we had
+    private void btgetlisttypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btgetlisttypeActionPerformed
         // TODO add your handling code here:
-        tbPublishinfo.setText("");
-        appendToPane(Main.tbPublishinfo, "Please note that, after generation XML data, we have a folder named \"data\" " + "\n", Color.RED);
-        appendToPane(Main.tbPublishinfo, "Please sure that, you copied the \"data\" folder to GeoServer folder before continute" + "\n", Color.RED);
-        appendToPane(Main.tbPublishinfo, "Please refer to the help to know exactly how to copy the \"data\" folder" + "\n", Color.RED);
-    }//GEN-LAST:event_btcleanpublishinforActionPerformed
+
+        hostPG = tbhostPG.getText();
+        portPG = tbportPG.getText();
+        userPG = tbuserPG.getText();
+        pwPG = tbpassPG.getText();
+        connectURLPG = "jdbc:postgresql://" + hostPG + ":" + portPG + "/";
+        String connectURLPostgreSQL = Config.connectURLPG + "db_Agri";
+        Connection conn = Connect.getConnectPostgreSQL(connectURLPostgreSQL, Config.userPG, Config.pwPG);
+        if (conn != null) {
+            String sql = "select * from tbl_datatype order by id";
+            ResultSet rescheck = run_SQL(conn, sql);
+            try {
+                DefaultTableModel model = (DefaultTableModel) tabletype.getModel();
+                while (tabletype.getRowCount() > 0) {
+                    model.removeRow(0);
+                }
+                while (rescheck.next()) {
+                    Integer id = rescheck.getInt("id");
+                    String code = rescheck.getString("code");
+                    String name = rescheck.getString("name");
+                    model.addRow(new Object[]{false, id, code, name});
+
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Could not connect to the Postgre host");
+        }
+
+    }//GEN-LAST:event_btgetlisttypeActionPerformed
+
+    //get list county need to be create index
+    private void btgetlistcountyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btgetlistcountyActionPerformed
+        // TODO add your handling code here:
+        hostPG = tbhostPG.getText();
+        portPG = tbportPG.getText();
+        userPG = tbuserPG.getText();
+        pwPG = tbpassPG.getText();
+        connectURLPG = "jdbc:postgresql://" + hostPG + ":" + portPG + "/";
+        String connectURLPostgreSQL = Config.connectURLPG + "db_Agri";
+        Connection conn = Connect.getConnectPostgreSQL(connectURLPostgreSQL, Config.userPG, Config.pwPG);
+        String countryname = cbregion.getSelectedItem().toString();
+        int id_0 = 213;
+        if ("korea".equals(countryname)) {
+            id_0 = 213;
+        }
+        if ("china".equals(countryname)) {
+            id_0 = 49;
+        }
+        if ("usa".equals(countryname)) {
+            id_0 = 244;
+        }
+        if (conn != null) {
+            String sql = "select id_1,name_0,name_1 from tbl_province where id_0='" + id_0 + "' order by name_1";
+            ResultSet rescheck = run_SQL(conn, sql);
+            try {
+                DefaultTableModel model = (DefaultTableModel) tablecounty.getModel();
+                while (tablecounty.getRowCount() > 0) {
+                    model.removeRow(0);
+                }
+                while (rescheck.next()) {
+                    Integer id_1 = rescheck.getInt("id_1");
+                    String name_1 = rescheck.getString("name_1");
+                    model.addRow(new Object[]{false, id_0, id_1, name_1});
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Could not connect to the Postgre host");
+        }
+    }//GEN-LAST:event_btgetlistcountyActionPerformed
+
+    //create index for table follow the parameter selected
+    private void btcreateindexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btcreateindexActionPerformed
+        // TODO add your handling code here:
+        Integer startyear = Integer.valueOf(cbstartyear.getSelectedItem().toString());
+        Integer endyear = Integer.valueOf(cbendyear.getSelectedItem().toString());
+        if (endyear < startyear) {
+            JOptionPane.showMessageDialog(this, "Wrong range " + startyear + "-" + endyear);
+            return;
+        } else {
+            tbcreateindexinfor.setText("");
+            List<String> listtype = new ArrayList<String>();
+            List<Integer> listcounty = new ArrayList<Integer>();
+
+            DefaultTableModel model = (DefaultTableModel) tabletype.getModel();
+            int rowcount = model.getRowCount();
+            for (int i = 0; i < rowcount; i++) {
+                if ((boolean) model.getValueAt(i, 0)) {
+                    listtype.add((String) model.getValueAt(i, 2));
+                }
+            }
+
+            model = (DefaultTableModel) tablecounty.getModel();
+            rowcount = model.getRowCount();
+            for (int i = 0; i < rowcount; i++) {
+                if ((boolean) model.getValueAt(i, 0)) {
+                    listcounty.add((int) model.getValueAt(i, 2));
+                }
+            }
+
+            if (listtype.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please choose at least one data type ");
+                return;
+            }
+
+            if (listcounty.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please choose at least one county ");
+                return;
+            }
+
+            tbcreateindexinfor.setText("");
+            btcreateindex.setEnabled(false);
+            ThreadCreateIndex task1 = new ThreadCreateIndex("Create Index Task1");
+        }
+    }//GEN-LAST:event_btcreateindexActionPerformed
+
+    //test click even on table
+    private void tablecountyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablecountyMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tablecountyMouseClicked
+
+    //add function checked/unchecked all row
+    public static void tablecountycheclAll() {
+        tablecounty.getTableHeader().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                DefaultTableModel model = (DefaultTableModel) tablecounty.getModel();
+                int col = tablecounty.columnAtPoint(e.getPoint());
+                int check = 0;
+                if (col == 0) {
+                    int rowcount = model.getRowCount();
+                    for (int i = 0; i < rowcount; i++) {
+                        if ((boolean) model.getValueAt(i, 0)) {
+                            check += 1;
+                        }
+                    }
+                    if (check == rowcount) {
+                        for (int i = 0; i < rowcount; i++) {
+                            model.setValueAt(false, i, 0);
+                        }
+                    } else {
+                        for (int i = 0; i < rowcount; i++) {
+                            model.setValueAt(true, i, 0);
+                        }
+                    }
+                }
+                //String name = tablecounty.getColumnName(col);
+                //System.out.println("Column index selected " + col + " " + name);
+            }
+        });
+    }
+
+    //add function checked/unchecked all row
+    public static void tabletypecheclAll() {
+        tabletype.getTableHeader().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                DefaultTableModel model = (DefaultTableModel) tabletype.getModel();
+                int col = tabletype.columnAtPoint(e.getPoint());
+                int check = 0;
+                if (col == 0) {
+                    int rowcount = model.getRowCount();
+                    for (int i = 0; i < rowcount; i++) {
+                        if ((boolean) model.getValueAt(i, 0)) {
+                            check += 1;
+                        }
+                    }
+                    if (check == rowcount) {
+                        for (int i = 0; i < rowcount; i++) {
+                            model.setValueAt(false, i, 0);
+                        }
+                    } else {
+                        for (int i = 0; i < rowcount; i++) {
+                            model.setValueAt(true, i, 0);
+                        }
+                    }
+                }
+                //String name = tablecounty.getColumnName(col);
+                //System.out.println("Column index selected " + col + " " + name);
+            }
+        });
+    }
 
     /**
      * @param args the command line arguments
@@ -920,11 +1280,12 @@ public class Main extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Main().setVisible(true);
-               
+
             }
         });
     }
 
+    //get current time of system
     public static String getCurrentTimeStamp() {
         SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//dd/MM/yyyy
         Date now = new Date();
@@ -932,6 +1293,7 @@ public class Main extends javax.swing.JFrame {
         return strDate;
     }
 
+    //thread update mosaic table
     public class ThreadUpdateMosaicTable implements Runnable {
 
         Thread _runner;
@@ -971,6 +1333,7 @@ public class Main extends javax.swing.JFrame {
         }
     }
 
+    //thread generate XML file
     public class ThreadGenerateXML implements Runnable {
 
         Thread _runner;
@@ -1014,6 +1377,7 @@ public class Main extends javax.swing.JFrame {
         }
     }
 
+    //thread publish layer
     public class ThreadPublishLayer implements Runnable {
 
         Thread _runner;
@@ -1053,6 +1417,77 @@ public class Main extends javax.swing.JFrame {
         }
     }
 
+    //thread create index
+    public class ThreadCreateIndex implements Runnable {
+
+        Thread _runner;
+
+        public ThreadCreateIndex(String threadName) {
+            _runner = new Thread(this, threadName);  //Tạo Thread mới            
+            CreateThread();
+        }
+
+        private void CreateThread() {
+            try {
+                _runner.start();    //Bắt đầu thread mới                
+            } catch (Exception e) {
+                appendToPane(tbcreateindexinfor, e.getMessage() + "\n", Color.RED);
+            }
+        }
+
+        @Override
+        public synchronized void run() {
+            try {
+
+                Integer startyear = Integer.valueOf(cbstartyear.getSelectedItem().toString());
+                Integer endyear = Integer.valueOf(cbendyear.getSelectedItem().toString());
+                Integer id_0 = 0;
+
+                List<String> listtype = new ArrayList<>();
+                List<Integer> listcounty = new ArrayList<>();
+
+                DefaultTableModel model = (DefaultTableModel) tabletype.getModel();
+                int rowcount = model.getRowCount();
+                for (int i = 0; i < rowcount; i++) {
+                    if ((boolean) model.getValueAt(i, 0)) {
+                        listtype.add((String) model.getValueAt(i, 2));
+                    }
+                }
+
+                model = (DefaultTableModel) tablecounty.getModel();
+                rowcount = model.getRowCount();
+                for (int i = 0; i < rowcount; i++) {
+                    if ((boolean) model.getValueAt(i, 0)) {
+                        listcounty.add((int) model.getValueAt(i, 2));
+                        id_0 = (int) model.getValueAt(i, 1);
+                    }
+                }
+                //Create index at here
+                boolean overwrite = checkoverwriteindex.isSelected();
+                for (int y = startyear; y <= endyear; y++) {
+                    for (int id_1 : listcounty) {
+                        for (String type : listtype) {
+                            UpdateIndexTable.update_IndexbyYear(y, id_0, id_1, type, overwrite);
+                        }
+                    }
+                }
+
+                btcreateindex.setEnabled(true);
+                appendToPane(tbcreateindexinfor, "Complete..." + getCurrentTimeStamp() + "\n", Color.BLUE);
+                Thread.sleep(0);
+            } catch (InterruptedException e) {
+                appendToPane(Main.tbcreateindexinfor, e.getMessage() + "\n", Color.RED);
+            } catch (ParseException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                appendToPane(Main.tbcreateindexinfor, ex.getMessage() + "\n", Color.RED);
+            } catch (SQLException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                appendToPane(Main.tbcreateindexinfor, ex.getMessage() + "\n", Color.RED);
+            }
+        }
+    }
+
+    //append a text with style to a panel text
     public static void appendToPane(JTextPane tp, String msg, Color c) {
         StyleContext sc = StyleContext.getDefaultStyleContext();
         AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
@@ -1067,10 +1502,10 @@ public class Main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btclean_generateinfo;
-    public static javax.swing.JButton btclean_updatemosaictableinfor;
-    private javax.swing.JButton btcleanpublishinfor;
+    public static javax.swing.JButton btcreateindex;
     public static javax.swing.JButton btgenerateXML;
+    public static javax.swing.JButton btgetlistcounty;
+    public static javax.swing.JButton btgetlisttype;
     public javax.swing.JButton btpublishLayer;
     private javax.swing.JButton btsetXMLdata;
     private javax.swing.JButton btsetdestinationXML;
@@ -1081,6 +1516,7 @@ public class Main extends javax.swing.JFrame {
     public static javax.swing.JComboBox cbendyear;
     public static javax.swing.JComboBox cbregion;
     public static javax.swing.JComboBox cbstartyear;
+    public static javax.swing.JCheckBox checkoverwriteindex;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1096,6 +1532,9 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1104,6 +1543,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -1112,12 +1553,18 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
+    public static javax.swing.JTable tablecounty;
+    public static javax.swing.JTable tabletype;
     public static javax.swing.JTextPane tbPublishinfo;
+    public static javax.swing.JTextPane tbcreateindexinfor;
     public static javax.swing.JTextPane tbgenerateXMLinfor;
     public static javax.swing.JTextField tbhostGS;
     public static javax.swing.JTextField tbhostPG;

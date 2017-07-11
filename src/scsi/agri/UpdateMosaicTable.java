@@ -63,29 +63,35 @@ public class UpdateMosaicTable {
             sql = "Select count(*) as count from mosaic where name ='" + tblname + "' and tiletable='" + fulltblname + "'";
             //   sql = "Select count(*) from " + "\"" + shmname + "\"" + ".\"" + tablname + "\"" + " where name ='" + tablname + "'";
             ResultSet rescheck = run_SQL(connectPostgreSQL, sql);
-            while (rescheck.next()) {
-                if (rescheck.getInt("count") == 0) {
-                    String insert = "INSERT INTO public.mosaic (name, tiletable) VALUES ('" + tblname + "', '" + fulltblname + "')";
-                    boolean check = execute_SQL(connectPostgreSQL, insert);
-                    if (!check) {
-                        System.out.println(fulltblname + " was inserted into mosaic table");
+            if (rescheck == null) {
+                try {
+                    appendToPane(Main.tbupdatemosaicinfor, "Could not check " + fulltblname + " in mosaic table " + getCurrentTimeStamp() + "\n", Color.BLACK);
+                } catch (Exception e) {
+                }
+            } else {
+                while (rescheck.next()) {
+                    if (rescheck.getInt("count") == 0) {
+                        String insert = "INSERT INTO public.mosaic (name, tiletable) VALUES ('" + tblname + "', '" + fulltblname + "')";
+                        boolean check = execute_SQL(connectPostgreSQL, insert);
+                        if (!check) {
+                            System.out.println(fulltblname + " was inserted into mosaic table");
+                            try {
+                                appendToPane(Main.tbupdatemosaicinfor, fulltblname + " was inserted into mosaic table " + getCurrentTimeStamp() + "\n", Color.BLACK);
+                            } catch (Exception e) {
+                            }
+                            //Render xml file
+                        }
+                    } else {
+                        System.out.println(fulltblname + " is exists in mosaic table");
                         try {
-                            appendToPane(Main.tbupdatemosaicinfor, fulltblname + " was inserted into mosaic table " + getCurrentTimeStamp() + "\n", Color.BLACK);
+                            appendToPane(Main.tbupdatemosaicinfor, fulltblname + " is exists in mosaic table " + getCurrentTimeStamp() + "\n", Color.BLACK);
                         } catch (Exception e) {
                         }
-                        //Render xml file
-                    }
-                } else {
-                    System.out.println(fulltblname + " is exists in mosaic table");
-                    try {
-                        appendToPane(Main.tbupdatemosaicinfor, fulltblname + " is exists in mosaic table " + getCurrentTimeStamp() + "\n", Color.BLACK);
-                    } catch (Exception e) {
                     }
                 }
             }
+
         }
     }
-
-
 
 }
