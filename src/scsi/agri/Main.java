@@ -25,10 +25,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.prefs.Preferences;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.SimpleAttributeSet;
@@ -145,6 +147,25 @@ public class Main extends javax.swing.JFrame {
         jLabel23 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
         checkoverwriteindex = new javax.swing.JCheckBox();
+        jPanel12 = new javax.swing.JPanel();
+        jPanel13 = new javax.swing.JPanel();
+        jLabel27 = new javax.swing.JLabel();
+        jLabel28 = new javax.swing.JLabel();
+        tbdbname = new javax.swing.JTextField();
+        tbshmname = new javax.swing.JTextField();
+        tbespg = new javax.swing.JTextField();
+        jLabel29 = new javax.swing.JLabel();
+        jLabel31 = new javax.swing.JLabel();
+        tbdatatype = new javax.swing.JTextField();
+        jLabel30 = new javax.swing.JLabel();
+        btuploadraster2pg = new javax.swing.JButton();
+        bttestPGconnection2 = new javax.swing.JButton();
+        jLabel25 = new javax.swing.JLabel();
+        jLabel26 = new javax.swing.JLabel();
+        tbdataupload = new javax.swing.JTextField();
+        tbsetexecutorupload = new javax.swing.JTextField();
+        btsetexecutorupload = new javax.swing.JButton();
+        btsetdataupload = new javax.swing.JButton();
 
         jButton2.setText("Run");
 
@@ -669,7 +690,7 @@ public class Main extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 874, Short.MAX_VALUE)
+            .addComponent(jTabbedPane2)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -819,11 +840,161 @@ public class Main extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Create Index", jPanel2);
 
+        jPanel13.setBackground(new java.awt.Color(204, 204, 204));
+
+        jLabel27.setText("Database");
+
+        jLabel28.setText("Schema");
+
+        tbdbname.setText("2000");
+
+        tbshmname.setText("korea");
+
+        tbespg.setText("4326");
+
+        jLabel29.setText("ESPG");
+
+        jLabel31.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel31.setText("Other parameters");
+
+        tbdatatype.setText("tif");
+
+        jLabel30.setText("Format");
+
+        btuploadraster2pg.setText("Upload");
+        btuploadraster2pg.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btuploadraster2pgActionPerformed(evt);
+            }
+        });
+
+        bttestPGconnection2.setText("Test");
+        bttestPGconnection2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bttestPGconnection2ActionPerformed(evt);
+            }
+        });
+
+        jLabel25.setText("Executor");
+
+        jLabel26.setText("Data Source");
+
+        btsetexecutorupload.setText("Choose");
+        btsetexecutorupload.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btsetexecutoruploadActionPerformed(evt);
+            }
+        });
+
+        btsetdataupload.setText("Choose");
+        btsetdataupload.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btsetdatauploadActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
+        jPanel13.setLayout(jPanel13Layout);
+        jPanel13Layout.setHorizontalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel13Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tbdbname)
+                        .addGap(23, 23, 23)
+                        .addComponent(jLabel28, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tbshmname)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel30, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tbdatatype)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel29, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tbespg))
+                    .addComponent(jLabel31)
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel26)
+                            .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel13Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tbsetexecutorupload, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel13Layout.createSequentialGroup()
+                                .addGap(4, 4, 4)
+                                .addComponent(tbdataupload, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btsetexecutorupload, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btsetdataupload, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
+                    .addComponent(bttestPGconnection2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btuploadraster2pg, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel13Layout.setVerticalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel13Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(btsetexecutorupload)
+                            .addComponent(tbsetexecutorupload, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel25))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tbdataupload, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel26)
+                            .addComponent(btsetdataupload))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                        .addComponent(bttestPGconnection2))
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel31)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jLabel27)
+                            .addComponent(tbdbname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel28)
+                            .addComponent(tbshmname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel30)
+                            .addComponent(tbdatatype, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel29)
+                            .addComponent(tbespg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btuploadraster2pg)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
+        jPanel12.setLayout(jPanel12Layout);
+        jPanel12Layout.setHorizontalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel12Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(297, Short.MAX_VALUE))
+        );
+        jPanel12Layout.setVerticalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel12Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(269, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Upload Data", jPanel12);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 879, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -837,6 +1008,9 @@ public class Main extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public static String openedfolder = "E:\\Projects\\Yonsei\\Agriculture\\AgriAdmin";
+            //System.getProperty("user.home");
+
     //test PG connection
     private void bttestPGconnectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttestPGconnectionActionPerformed
         // TODO add your handling code here:
@@ -845,7 +1019,7 @@ public class Main extends javax.swing.JFrame {
         userPG = tbuserPG.getText();
         pwPG = tbpassPG.getText();
         connectURLPG = "jdbc:postgresql://" + hostPG + ":" + portPG + "/";
-        String connectURLPostgreSQL = Config.connectURLPG ;//+ "postgres";
+        String connectURLPostgreSQL = Config.connectURLPG;//+ "postgres";
         Connection conntest = Connect.getConnectPostgreSQL(connectURLPostgreSQL, Config.userPG, Config.pwPG);
         if (conntest != null) {
             JOptionPane.showMessageDialog(this, "Connect success!");
@@ -1187,6 +1361,141 @@ public class Main extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_tablecountyMouseClicked
 
+    private void btsetexecutoruploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btsetexecutoruploadActionPerformed
+        // TODO add your handling code here:
+
+        JFileChooser executorChooser = new JFileChooser();
+        executorChooser.setCurrentDirectory(new File(openedfolder));
+        executorChooser.setDialogTitle("Select executor to upload raster to Postgres");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Batch Script", "bat");
+        executorChooser.setFileFilter(filter);
+        int result = executorChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = executorChooser.getSelectedFile();
+            openedfolder = selectedFile.getAbsolutePath();
+            tbsetexecutorupload.setText(selectedFile.getAbsolutePath());
+        }
+    }//GEN-LAST:event_btsetexecutoruploadActionPerformed
+
+    private void btsetdatauploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btsetdatauploadActionPerformed
+        // TODO add your handling code here:
+        JFileChooser folderChooser = new JFileChooser();
+        folderChooser.setCurrentDirectory(new File(openedfolder));
+        folderChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        folderChooser.setDialogTitle("Select data to upload to Postgres");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(tbdatatype.getText(), "*");
+        folderChooser.setFileFilter(filter);
+        int result = folderChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = folderChooser.getSelectedFile();
+            openedfolder = selectedFile.getAbsolutePath();
+            tbdataupload.setText(selectedFile.getAbsolutePath());
+        }
+    }//GEN-LAST:event_btsetdatauploadActionPerformed
+
+    private void btuploadraster2pgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btuploadraster2pgActionPerformed
+        // TODO add your handling code here:
+        if ("".equals(tbsetexecutorupload.getText())) {
+            JOptionPane.showMessageDialog(this, "Please choose an executor");
+        }
+        {
+            if ("".equals(tbdataupload.getText())) {
+                JOptionPane.showMessageDialog(this, "Please choose data to upload (folder)");
+            } else {
+                if ("".equals(tbdatatype.getText())) {
+                    JOptionPane.showMessageDialog(this, "Please set type of data)");
+                } else {
+                    if ("tif".equals(tbdatatype.getText())) {
+                        File[] check = scsi.file.Core.finder(tbdataupload.getText(), "tif");
+                        if (check.length == 0) {
+                            JOptionPane.showMessageDialog(this, "Could not find a tif file in your folder");
+                        } else {
+                            try {
+                                String batchcontent = scsi.text.Core.read_TextFile(tbsetexecutorupload.getText());
+                                batchcontent = batchcontent.replace("pgpass", tbpassPG.getText());
+                                batchcontent = batchcontent.replace("pguser", tbuserPG.getText());
+                                batchcontent = batchcontent.replace("dbname", tbdbname.getText());
+                                batchcontent = batchcontent.replace("pghost", tbhostPG.getText());
+                                batchcontent = batchcontent.replace("pgport", tbportPG.getText());
+                                batchcontent = batchcontent.replace("rasterformat", tbdatatype.getText());
+                                batchcontent = batchcontent.replace("espg", tbespg.getText());
+                                batchcontent = batchcontent.replace("shmname", tbshmname.getText());
+                                scsi.text.Core.write_TextFile(new File(tbdataupload.getText() + "/upload.bat"), batchcontent, false);
+                                //Runtime.getRuntime().exec("cmd /c start " + tbdataupload.getText() + "/upload.bat");
+                                System.out.println(batchcontent);
+                            } catch (IOException ex) {
+                                JOptionPane.showMessageDialog(this, "Could not read executor file");
+                                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    }
+                    if ("shp".equals(tbdatatype.getText())) {
+                        File[] listfile = scsi.file.Core.finder(tbdataupload.getText(), "shp");
+                        if (listfile.length == 0) {
+                            JOptionPane.showMessageDialog(this, "Could not find a shp file in your folder");
+                        } else {
+                            for (File file : listfile) {
+                                String fname = file.getName();
+                                String tblname = fname.split("\\.")[0];
+                                try {
+                                    String batchcontent = scsi.text.Core.read_TextFile(tbsetexecutorupload.getText());
+                                    batchcontent = batchcontent.replace("pgpass", tbpassPG.getText());
+                                    batchcontent = batchcontent.replace("pguser", tbuserPG.getText());
+                                    batchcontent = batchcontent.replace("dbname", tbdbname.getText());
+                                    batchcontent = batchcontent.replace("shmname", tbshmname.getText());
+                                    batchcontent = batchcontent.replace("tblname", tblname);
+                                    batchcontent = batchcontent.replace("pghost", tbhostPG.getText());
+                                    batchcontent = batchcontent.replace("pgport", tbportPG.getText());
+                                    batchcontent = batchcontent.replace("shpfile", file.getAbsolutePath());
+                                    batchcontent = batchcontent.replace("espg", tbespg.getText());
+                       
+                                    scsi.text.Core.write_TextFile(new File(tbdataupload.getText() + "/upload.bat"), batchcontent, false);
+                                    //Delete the old data if exist
+                                    String sql = "drop table IF EXISTS " + tbshmname.getText() + ".\"" + tblname + "\" CASCADE";
+                                    hostPG = tbhostPG.getText();
+                                    portPG = tbportPG.getText();
+                                    userPG = tbuserPG.getText();
+                                    pwPG = tbpassPG.getText();
+                                    String dbname = tbdbname.getText();
+                                    connectURLPG = "jdbc:postgresql://" + hostPG + ":" + portPG + "/";
+                                    String connectURLPostgreSQL = Config.connectURLPG + dbname;
+                                    Connection conn = Connect.getConnectPostgreSQL(connectURLPostgreSQL, Config.userPG, Config.pwPG);
+                                    if (conn != null) {
+                                        scsi.db.Core.execute_SQL(conn, sql);
+                                    } else {
+                                        JOptionPane.showMessageDialog(this, "Could not connect to the Postgre host");
+                                    }
+                                    Runtime.getRuntime().exec("cmd /c start " + tbdataupload.getText() + "/upload.bat");
+                                    //System.out.println(batchcontent);
+                                } catch (IOException ex) {
+                                    JOptionPane.showMessageDialog(this, "Could not read executor file");
+                                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_btuploadraster2pgActionPerformed
+
+    private void bttestPGconnection2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttestPGconnection2ActionPerformed
+        // TODO add your handling code here:
+        hostPG = tbhostPG.getText();
+        portPG = tbportPG.getText();
+        userPG = tbuserPG.getText();
+        pwPG = tbpassPG.getText();
+        String dbname = tbdbname.getText();
+        connectURLPG = "jdbc:postgresql://" + hostPG + ":" + portPG + "/";
+        String connectURLPostgreSQL = Config.connectURLPG + dbname;
+        Connection conntest = Connect.getConnectPostgreSQL(connectURLPostgreSQL, Config.userPG, Config.pwPG);
+        if (conntest != null) {
+            JOptionPane.showMessageDialog(this, "Connect success!");
+        } else {
+            JOptionPane.showMessageDialog(this, "Could not connect to the Postgre host");
+        }
+    }//GEN-LAST:event_bttestPGconnection2ActionPerformed
+
     //add function checked/unchecked all row
     public static void tablecountycheclAll() {
         tablecounty.getTableHeader().addMouseListener(new MouseAdapter() {
@@ -1508,11 +1817,15 @@ public class Main extends javax.swing.JFrame {
     public static javax.swing.JButton btgetlisttype;
     public javax.swing.JButton btpublishLayer;
     private javax.swing.JButton btsetXMLdata;
+    private javax.swing.JButton btsetdataupload;
     private javax.swing.JButton btsetdestinationXML;
+    private javax.swing.JButton btsetexecutorupload;
     private javax.swing.JButton btsetsourceXML;
     private javax.swing.JButton bttestGSconnection;
     private javax.swing.JButton bttestPGconnection;
+    private javax.swing.JButton bttestPGconnection2;
     public static javax.swing.JButton btupdatemosaictable;
+    public static javax.swing.JButton btuploadraster2pg;
     public static javax.swing.JComboBox cbendyear;
     public static javax.swing.JComboBox cbregion;
     public static javax.swing.JComboBox cbstartyear;
@@ -1535,7 +1848,14 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1545,6 +1865,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -1565,6 +1887,10 @@ public class Main extends javax.swing.JFrame {
     public static javax.swing.JTable tabletype;
     public static javax.swing.JTextPane tbPublishinfo;
     public static javax.swing.JTextPane tbcreateindexinfor;
+    public static javax.swing.JTextField tbdatatype;
+    public static javax.swing.JTextField tbdataupload;
+    public static javax.swing.JTextField tbdbname;
+    public static javax.swing.JTextField tbespg;
     public static javax.swing.JTextPane tbgenerateXMLinfor;
     public static javax.swing.JTextField tbhostGS;
     public static javax.swing.JTextField tbhostPG;
@@ -1574,6 +1900,8 @@ public class Main extends javax.swing.JFrame {
     public static javax.swing.JTextField tbportGS;
     public static javax.swing.JTextField tbportPG;
     public static javax.swing.JTextField tbsaveXMLto;
+    public static javax.swing.JTextField tbsetexecutorupload;
+    public static javax.swing.JTextField tbshmname;
     public static javax.swing.JTextPane tbupdatemosaicinfor;
     public static javax.swing.JTextField tbuserGS;
     public static javax.swing.JTextField tbuserPG;

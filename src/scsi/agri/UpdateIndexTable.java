@@ -227,11 +227,24 @@ public class UpdateIndexTable {
                 + " FROM ("
                 + " SELECT \"public\".ST_DumpAsPolygons(\"public\".ST_Clip(" + rastertable + ".rast, 1, tbl_province.geom, true)) AS gv"
                 + " FROM tbl_province," + rastertable
-                + " WHERE  \"public\".tbl_province.id_0=" + id_0 + " and \"public\".tbl_province.id_1=" + id_1 + ") AS foo ";
-        if ("ndvi".equals(type)) {
-            sql_getvalue += " where (gv).val >=- 1 AND (gv).val <= 1";
-        }else{
-            sql_getvalue += " where (gv).val >=- 10000 AND (gv).val <= 10000";
+                + " WHERE  \"public\".tbl_province.id_0=" + id_0 + " and \"public\".tbl_province.id_1=" + id_1
+                + " AND \"public\".st_intersects(" + rastertable + ".rast,tbl_province.geom)"
+                + ") AS foo ";
+        if (null != type) {
+            switch (type) {
+                case "ndvi":
+                    sql_getvalue += " where (gv).val >=- 1 AND (gv).val <= 1";
+                    break;
+                case "pre":
+                    sql_getvalue += " where (gv).val >=0";
+                    break;
+                case "sho":
+                    sql_getvalue += " where (gv).val >=0";
+                    break;
+                default:
+                    sql_getvalue += " where (gv).val >=- 1000 AND (gv).val <= 1000";
+                    break;
+            }
         }
         //System.out.println(sql_getvalue);
         ResultSet rescheck = run_SQL(connectDatatable, sql_getvalue);

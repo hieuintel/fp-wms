@@ -9,6 +9,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -169,6 +170,16 @@ public class Core {
             fw.flush();
         } catch (IOException ex) {
         }
+    }
+
+    public static File[] finder(String dirName, String extension) {
+        File dir = new File(dirName);
+        return dir.listFiles(new FilenameFilter() {
+            public boolean accept(File dir, String filename) {
+                return filename.endsWith("." + extension);
+            }
+        });
+
     }
 
 }

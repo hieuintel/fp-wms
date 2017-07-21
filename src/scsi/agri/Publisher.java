@@ -146,7 +146,7 @@ public class Publisher {
             String storeName = scsi.file.Core.get_fileNameWithOutExt(listfile.get(i));
             //Because of each store mosaicjdbc only contain one layer, check exist both of them
             if (reader.existsCoveragestore(dbname, storeName) || reader.existsLayer(dbname, storeName)) {
-                System.out.println("Published layer " + storeName);
+                System.out.println("Layer " + storeName + " is existed");
                 appendToPane(Main.tbPublishinfo, "Layer " + storeName + " " + getCurrentTimeStamp() + " is existed \n", Color.ORANGE);
             } else {
                 boolean pub = publisher.publishImageMosaicJDBC(dbname, storeName, listfile.get(i));

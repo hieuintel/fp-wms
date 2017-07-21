@@ -39,8 +39,8 @@ public class Core {
         return everything;
     }
 
-    public static void write_TextFile(File Filename, String text, Boolean OverWrite) {
-        try (BufferedWriter fw = new BufferedWriter(new FileWriter(Filename, OverWrite))) {
+    public static void write_TextFile(File Filename, String text, Boolean append) {
+        try (BufferedWriter fw = new BufferedWriter(new FileWriter(Filename, append))) {
             fw.append(text + "\n");
             fw.flush();
         } catch (IOException ex) {
