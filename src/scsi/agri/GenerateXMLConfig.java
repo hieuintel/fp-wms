@@ -141,7 +141,7 @@ public class GenerateXMLConfig {
             scsi.file.Core.write_File(new File(pathstore + "\\" + name + ".xml"), newxml, Boolean.FALSE);
             System.out.println("Created " + pathstore + "\\" + name + ".xml");
             try {
-                appendToPane(Main.tbgenerateXMLinfor, "Created " + pathstore + "\\" + name + ".xml" + getCurrentTimeStamp() + "\n", Color.BLACK);
+                appendToPane(Main.tbgenerateXMLinfor, "Created " + pathstore + "\\" + name + ".xml " + getCurrentTimeStamp() + "\n", Color.BLACK);
             } catch (Exception e) {
             }
         }

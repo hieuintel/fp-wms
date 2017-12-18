@@ -25,22 +25,27 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.prefs.Preferences;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
+import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.JTree;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
-import static scsi.agri.Main.tablecounty;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import static scsi.agri.Publisher.RESTPW;
 import static scsi.agri.Publisher.RESTURL;
 import static scsi.agri.Publisher.RESTUSER;
-import static scsi.agri.UpdateIndexTable.get_valueIndex;
 import scsi.db.*;
 import static scsi.db.Config.hostPG;
 import static scsi.db.Config.portPG;
@@ -141,13 +146,11 @@ public class Main extends javax.swing.JFrame {
         tabletype = new javax.swing.JTable();
         btgetlisttype = new javax.swing.JButton();
         btgetlistcounty = new javax.swing.JButton();
-        jScrollPane6 = new javax.swing.JScrollPane();
-        tablecounty = new javax.swing.JTable();
         btcreateindex = new javax.swing.JButton();
         jLabel22 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
-        jLabel24 = new javax.swing.JLabel();
         checkoverwriteindex = new javax.swing.JCheckBox();
+        jPanelRegionTree = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
         jLabel27 = new javax.swing.JLabel();
@@ -442,7 +445,6 @@ public class Main extends javax.swing.JFrame {
 
         jLabel21.setText("Power by SCSI Lab @ Yonsei University");
 
-        jLabel32.setIcon(new javax.swing.ImageIcon("C:\\Users\\HieuIntel\\Desktop\\YonseiUniversityEmblem.png")); // NOI18N
         jLabel32.setMaximumSize(new java.awt.Dimension(300, 300));
         jLabel32.setMinimumSize(new java.awt.Dimension(300, 300));
         jLabel32.setPreferredSize(new java.awt.Dimension(300, 300));
@@ -552,6 +554,10 @@ public class Main extends javax.swing.JFrame {
 
         jPanel11.setForeground(new java.awt.Color(204, 204, 204));
 
+        tbsaveXMLto.setText("Select a folder to store XML files");
+
+        tbxmlsource.setText("Select the folder containing XML template files");
+
         jLabel16.setText("Source");
 
         jLabel17.setText("Save To");
@@ -643,6 +649,8 @@ public class Main extends javax.swing.JFrame {
         jLabel3.setText("Publish GeoServer Layer");
 
         jLabel20.setText("Path to XML");
+
+        tbpathtoXML.setText("Select the folder containing  XML files which you created at step 2");
 
         btsetXMLdata.setText("Choose");
         btsetXMLdata.addActionListener(new java.awt.event.ActionListener() {
@@ -746,32 +754,6 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        tablecounty.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "check", "id_0", "id_1", "name_1"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
-        tablecounty.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tablecountyMouseClicked(evt);
-            }
-        });
-        jScrollPane6.setViewportView(tablecounty);
-
         btcreateindex.setText("Create Index");
         btcreateindex.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -781,12 +763,22 @@ public class Main extends javax.swing.JFrame {
 
         jLabel22.setText("List of data");
 
-        jLabel23.setText("List of county");
-
-        jLabel24.setForeground(new java.awt.Color(0, 0, 255));
-        jLabel24.setText("id_0: countryid;  id_1: countyid");
+        jLabel23.setText("List of regions");
 
         checkoverwriteindex.setText("Overwrite");
+
+        jPanelRegionTree.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout jPanelRegionTreeLayout = new javax.swing.GroupLayout(jPanelRegionTree);
+        jPanelRegionTree.setLayout(jPanelRegionTreeLayout);
+        jPanelRegionTreeLayout.setHorizontalGroup(
+            jPanelRegionTreeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanelRegionTreeLayout.setVerticalGroup(
+            jPanelRegionTreeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 166, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -795,23 +787,20 @@ public class Main extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPanelRegionTree, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(checkoverwriteindex)
                         .addGap(18, 18, 18)
                         .addComponent(btcreateindex))
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                            .addComponent(btgetlisttype)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jLabel22))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(btgetlisttype)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel22))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                         .addComponent(btgetlistcounty)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel23)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel24)))
+                        .addComponent(jLabel23)))
                 .addContainerGap(493, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
@@ -833,11 +822,10 @@ public class Main extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btgetlistcounty)
-                    .addComponent(jLabel23)
-                    .addComponent(jLabel24))
+                    .addComponent(jLabel23))
+                .addGap(18, 18, 18)
+                .addComponent(jPanelRegionTree, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(11, 11, 11)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btcreateindex, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(checkoverwriteindex))
@@ -909,41 +897,48 @@ public class Main extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel13Layout.createSequentialGroup()
-                        .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tbdbname)
-                        .addGap(23, 23, 23)
-                        .addComponent(jLabel28, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tbshmname)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel30, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tbdatatype)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel29, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tbespg))
-                    .addComponent(jLabel31)
+                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel13Layout.createSequentialGroup()
+                                .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tbdbname)
+                                .addGap(23, 23, 23)
+                                .addComponent(jLabel28, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tbshmname)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel30, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tbdatatype)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel29, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tbespg))
+                            .addComponent(jLabel31))
+                        .addGap(161, 161, 161))
                     .addGroup(jPanel13Layout.createSequentialGroup()
                         .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel26)
                             .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel13Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(tbsetexecutorupload, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel13Layout.createSequentialGroup()
-                                .addGap(4, 4, 4)
-                                .addComponent(tbdataupload, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btsetexecutorupload, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btsetdataupload, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
-                    .addComponent(bttestPGconnection2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btuploadraster2pg, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE))
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(tbdataupload, javax.swing.GroupLayout.PREFERRED_SIZE, 678, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(tbsetexecutorupload, javax.swing.GroupLayout.PREFERRED_SIZE, 678, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(8, 8, 8)))
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(bttestPGconnection2, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
+                    .addComponent(btuploadraster2pg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btsetdataupload, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btsetexecutorupload, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
+
+        jPanel13Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btsetdataupload, btsetexecutorupload, bttestPGconnection2, btuploadraster2pg});
+
+        jPanel13Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {tbdataupload, tbsetexecutorupload});
+
         jPanel13Layout.setVerticalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel13Layout.createSequentialGroup()
@@ -986,7 +981,7 @@ public class Main extends javax.swing.JFrame {
             .addGroup(jPanel12Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap(297, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel12Layout.setVerticalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1017,7 +1012,9 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public static String openedfolder = "E:\\Projects\\Yonsei\\Agriculture\\AgriAdmin";
-            //System.getProperty("user.home");
+    public static JCheckBoxTree regionTree;
+    public static DefaultMutableTreeNode rootnode;
+    //System.getProperty("user.home");
 
     //test PG connection
     private void bttestPGconnectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttestPGconnectionActionPerformed
@@ -1092,25 +1089,41 @@ public class Main extends javax.swing.JFrame {
         tabletype.getColumnModel().getColumn(2).setPreferredWidth(50);
         tabletype.getColumnModel().getColumn(3).setPreferredWidth(200);
 
-        tablecounty.getColumnModel().getColumn(0).setPreferredWidth(50);
-        tablecounty.getColumnModel().getColumn(1).setPreferredWidth(50);
-        tablecounty.getColumnModel().getColumn(2).setPreferredWidth(50);
-        tablecounty.getColumnModel().getColumn(3).setPreferredWidth(200);
-
-        tablecountycheclAll();
         tabletypecheclAll();
         DefaultTableModel model = (DefaultTableModel) tabletype.getModel();
         while (tabletype.getRowCount() > 0) {
             model.removeRow(0);
         }
-        model = (DefaultTableModel) tablecounty.getModel();
-        while (tablecounty.getRowCount() > 0) {
-            model.removeRow(0);
-        }
+        
+        appendToPane(Main.tbupdatemosaicinfor, "*Please select region and years from Configuration\\Option " + "\n", Color.RED);
+        
+        appendToPane(Main.tbgenerateXMLinfor, "1. Please select region and years from Configuration\\Option " + "\n", Color.RED);
+        appendToPane(Main.tbgenerateXMLinfor, "2. Please select the folder containing XML template files " + "\n", Color.RED);
+        appendToPane(Main.tbgenerateXMLinfor, "3. Please select a folder to store XML files " + "\n", Color.RED);
+        appendToPane(Main.tbgenerateXMLinfor, "4. Run " + "\n", Color.RED);
+        appendToPane(Main.tbgenerateXMLinfor, "5. After generating XML complete. Go to the folder containing XML files \n",Color.RED);
+        appendToPane(Main.tbgenerateXMLinfor, " - copy \"data\" folder -> \"GeoServer installation folder\\data_dir\" folder if you are using Windows OS" + "\n", Color.RED);
+        appendToPane(Main.tbgenerateXMLinfor, " * Please note that, If you copied this folder before. Don't try overwrite it. Only copy the new year/workspace!" + "\n", Color.RED);
 
-        appendToPane(Main.tbPublishinfo, "Please note that, after generation XML data, we have a folder named \"data\" " + "\n", Color.RED);
-        appendToPane(Main.tbPublishinfo, "Please sure that, you copied the \"data\" folder to GeoServer folder before continute" + "\n", Color.RED);
-        appendToPane(Main.tbPublishinfo, "Please refer to the help to know exactly how to copy the \"data\" folder" + "\n", Color.RED);
+        appendToPane(Main.tbPublishinfo, "* Please note that, after generation XML data, we have a folder named \"data\" !" + "\n", Color.RED);
+        appendToPane(Main.tbPublishinfo, "* Please sure that, you copied the \"data\" folder to GeoServer folder before continute!" + "\n", Color.RED);
+        appendToPane(Main.tbPublishinfo, "* Please refer to the help to know exactly how to copy the \"data\" folder" + "\n", Color.RED);
+
+        regionTree = new JCheckBoxTree();
+        JNode newnode = new JNode();
+        newnode.text = "Region";
+        newnode.attribute = new JSONObject();
+        rootnode = new DefaultMutableTreeNode(newnode);
+        DefaultTreeModel treemodel = new DefaultTreeModel(rootnode);
+        regionTree.setModel(treemodel);
+        treemodel.reload();
+
+        JScrollPane scrollPane = new JScrollPane(regionTree);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setBounds(0, 0, jPanelRegionTree.getWidth(), jPanelRegionTree.getHeight());
+        jPanelRegionTree.add(scrollPane);
+
     }//GEN-LAST:event_formWindowOpened
 
     //set source XML - XML file template for generate xml configuration
@@ -1151,7 +1164,7 @@ public class Main extends javax.swing.JFrame {
         // TODO add your handling code here:
         JFileChooser folderChooser = new JFileChooser();
         //fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-        folderChooser.setDialogTitle("Select the folder containing XML template");
+        folderChooser.setDialogTitle("Select a folder to store XML files");
         folderChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int result = folderChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
@@ -1287,31 +1300,72 @@ public class Main extends javax.swing.JFrame {
         connectURLPG = "jdbc:postgresql://" + hostPG + ":" + portPG + "/";
         String connectURLPostgreSQL = Config.connectURLPG + "db_Agri";
         Connection conn = Connect.getConnectPostgreSQL(connectURLPostgreSQL, Config.userPG, Config.pwPG);
-        String countryname = cbregion.getSelectedItem().toString();
-        int id_0 = 213;
-        if ("korea".equals(countryname)) {
-            id_0 = 213;
-        }
-        if ("china".equals(countryname)) {
-            id_0 = 49;
-        }
-        if ("usa".equals(countryname)) {
-            id_0 = 244;
-        }
         if (conn != null) {
-            String sql = "select id_1,name_0,name_1 from tbl_province where id_0='" + id_0 + "' order by name_1";
-            ResultSet rescheck = run_SQL(conn, sql);
+            //Add region_level0 node
+            String sql = "select id_0,name_0 from region_level0 order by name_0";
+            ResultSet rescheck0 = run_SQL(conn, sql);
             try {
-                DefaultTableModel model = (DefaultTableModel) tablecounty.getModel();
-                while (tablecounty.getRowCount() > 0) {
-                    model.removeRow(0);
+
+                while (rescheck0.next()) {
+                    Integer id_0 = rescheck0.getInt("id_0");
+                    String name_0 = rescheck0.getString("name_0");
+                    JSONObject obj = new JSONObject();
+                    obj.put("id_0", id_0);
+                    obj.put("name_0", name_0);
+                    obj.put("data", "region_level0");
+                    JNode newjnode0 = new JNode();
+                    newjnode0.text = name_0;
+                    newjnode0.attribute = obj;
+                    DefaultMutableTreeNode newnode0 = new DefaultMutableTreeNode(newjnode0);
+
+                    //Add region_level1 node
+                    sql = "select id_1,name_1 from region_level1 where id_0='" + id_0 + "' order by name_1";
+                    ResultSet rescheck1 = run_SQL(conn, sql);
+                    while (rescheck1.next()) {
+                        Integer id_1 = rescheck1.getInt("id_1");
+                        String name_1 = rescheck1.getString("name_1");
+                        obj = new JSONObject();
+                        obj.put("id_0", id_0);
+                        obj.put("name_0", name_0);
+                        obj.put("id_1", id_1);
+                        obj.put("name_1", name_1);
+                        obj.put("data", "region_level1");
+                        JNode newjnode1 = new JNode();
+                        newjnode1.text = name_1;
+                        newjnode1.attribute = obj;
+                        DefaultMutableTreeNode newnode1 = new DefaultMutableTreeNode(newjnode1);
+                        newnode0.add(newnode1);
+                        //Add region_level2 node
+                        sql = "select id_2,name_2 from region_level2 where id_0='" + id_0 + "' And id_1='" + id_1 + "' order by name_2";
+                        ResultSet rescheck2 = run_SQL(conn, sql);
+                        while (rescheck2.next()) {
+                            Integer id_2 = rescheck2.getInt("id_2");
+                            String name_2 = rescheck2.getString("name_2");
+                            obj = new JSONObject();
+                            obj.put("id_0", id_0);
+                            obj.put("name_0", name_0);
+                            obj.put("id_1", id_1);
+                            obj.put("name_1", name_1);
+                            obj.put("id_2", id_2);
+                            obj.put("name_2", name_2);
+                            obj.put("data", "region_level2");
+                            JNode newjnode2 = new JNode();
+                            newjnode2.text = name_2;
+                            newjnode2.attribute = obj;
+                            DefaultMutableTreeNode newnode2 = new DefaultMutableTreeNode(newjnode2);
+                            newnode1.add(newnode2);
+                        }
+                    }
+                    rootnode.add(newnode0);
                 }
-                while (rescheck.next()) {
-                    Integer id_1 = rescheck.getInt("id_1");
-                    String name_1 = rescheck.getString("name_1");
-                    model.addRow(new Object[]{false, id_0, id_1, name_1});
-                }
+
+                DefaultTreeModel treemodel = new DefaultTreeModel(rootnode);
+                regionTree.setModel(treemodel);
+                treemodel.reload();
+
             } catch (SQLException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (JSONException ex) {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
@@ -1340,21 +1394,15 @@ public class Main extends javax.swing.JFrame {
                 }
             }
 
-            model = (DefaultTableModel) tablecounty.getModel();
-            rowcount = model.getRowCount();
-            for (int i = 0; i < rowcount; i++) {
-                if ((boolean) model.getValueAt(i, 0)) {
-                    listcounty.add((int) model.getValueAt(i, 2));
-                }
-            }
+            ArrayList<JNode> listJNode = getJNodeChecked(regionTree);
 
             if (listtype.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please choose at least one data type ");
                 return;
             }
 
-            if (listcounty.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please choose at least one county ");
+            if (listJNode.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please choose at least one region ");
                 return;
             }
 
@@ -1363,11 +1411,6 @@ public class Main extends javax.swing.JFrame {
             ThreadCreateIndex task1 = new ThreadCreateIndex("Create Index Task1");
         }
     }//GEN-LAST:event_btcreateindexActionPerformed
-
-    //test click even on table
-    private void tablecountyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablecountyMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tablecountyMouseClicked
 
     private void btsetexecutoruploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btsetexecutoruploadActionPerformed
         // TODO add your handling code here:
@@ -1456,7 +1499,7 @@ public class Main extends javax.swing.JFrame {
                                     batchcontent = batchcontent.replace("pgport", tbportPG.getText());
                                     batchcontent = batchcontent.replace("shpfile", file.getAbsolutePath());
                                     batchcontent = batchcontent.replace("espg", tbespg.getText());
-                       
+
                                     scsi.text.Core.write_TextFile(new File(tbdataupload.getText() + "/upload.bat"), batchcontent, false);
                                     //Delete the old data if exist
                                     String sql = "drop table IF EXISTS " + tbshmname.getText() + ".\"" + tblname + "\" CASCADE";
@@ -1503,37 +1546,6 @@ public class Main extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Could not connect to the Postgre host");
         }
     }//GEN-LAST:event_bttestPGconnection2ActionPerformed
-
-    //add function checked/unchecked all row
-    public static void tablecountycheclAll() {
-        tablecounty.getTableHeader().addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                DefaultTableModel model = (DefaultTableModel) tablecounty.getModel();
-                int col = tablecounty.columnAtPoint(e.getPoint());
-                int check = 0;
-                if (col == 0) {
-                    int rowcount = model.getRowCount();
-                    for (int i = 0; i < rowcount; i++) {
-                        if ((boolean) model.getValueAt(i, 0)) {
-                            check += 1;
-                        }
-                    }
-                    if (check == rowcount) {
-                        for (int i = 0; i < rowcount; i++) {
-                            model.setValueAt(false, i, 0);
-                        }
-                    } else {
-                        for (int i = 0; i < rowcount; i++) {
-                            model.setValueAt(true, i, 0);
-                        }
-                    }
-                }
-                //String name = tablecounty.getColumnName(col);
-                //System.out.println("Column index selected " + col + " " + name);
-            }
-        });
-    }
 
     //add function checked/unchecked all row
     public static void tabletypecheclAll() {
@@ -1758,10 +1770,8 @@ public class Main extends javax.swing.JFrame {
 
                 Integer startyear = Integer.valueOf(cbstartyear.getSelectedItem().toString());
                 Integer endyear = Integer.valueOf(cbendyear.getSelectedItem().toString());
-                Integer id_0 = 0;
 
                 List<String> listtype = new ArrayList<>();
-                List<Integer> listcounty = new ArrayList<>();
 
                 DefaultTableModel model = (DefaultTableModel) tabletype.getModel();
                 int rowcount = model.getRowCount();
@@ -1771,20 +1781,33 @@ public class Main extends javax.swing.JFrame {
                     }
                 }
 
-                model = (DefaultTableModel) tablecounty.getModel();
-                rowcount = model.getRowCount();
-                for (int i = 0; i < rowcount; i++) {
-                    if ((boolean) model.getValueAt(i, 0)) {
-                        listcounty.add((int) model.getValueAt(i, 2));
-                        id_0 = (int) model.getValueAt(i, 1);
-                    }
-                }
+                ArrayList<JNode> listJNode = getJNodeChecked(regionTree);
+
                 //Create index at here
                 boolean overwrite = checkoverwriteindex.isSelected();
-                for (int y = startyear; y <= endyear; y++) {
-                    for (int id_1 : listcounty) {
-                        for (String type : listtype) {
-                            UpdateIndexTable.update_IndexbyYear(y, id_0, id_1, type, overwrite);
+
+                for (JNode jnode : listJNode) {
+                    if (jnode.attribute.has("id_2")) {
+                        //Refer to county
+                        for (int y = startyear; y <= endyear; y++) {
+                            for (String type : listtype) {
+                                UpdateIndexTable.update_IndexbyYear(y, jnode.attribute.getInt("id_0"), jnode.attribute.getInt("id_1"), jnode.attribute.getInt("id_2"), type, overwrite);
+                            }
+                        }
+                    } else {
+                        if (jnode.attribute.has("id_1")) {
+                            //Refer to state/province
+                            for (int y = startyear; y <= endyear; y++) {
+                                for (String type : listtype) {
+                                    UpdateIndexTable.update_IndexbyYear(y, jnode.attribute.getInt("id_0"), jnode.attribute.getInt("id_1"), type, overwrite);
+                                }
+                            }
+                        } else {
+                            if (jnode.attribute.has("id_0")) {
+                                //Refer to country
+                            } else {
+
+                            }
                         }
                     }
                 }
@@ -1800,6 +1823,8 @@ public class Main extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                 appendToPane(Main.tbcreateindexinfor, ex.getMessage() + "\n", Color.RED);
+            } catch (JSONException ex) {
+                appendToPane(Main.tbcreateindexinfor, ex.getMessage() + "\n", Color.RED);
             }
         }
     }
@@ -1811,11 +1836,58 @@ public class Main extends javax.swing.JFrame {
 
         aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Lucida Console");
         aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
-
         int len = tp.getDocument().getLength();
+        if (len > 100000) {
+            len = 0;
+            tp.setText("");
+        }
         tp.setCaretPosition(len);
         tp.setCharacterAttributes(aset, false);
         tp.replaceSelection(msg);
+    }
+
+    public void printChecked(final JCheckBoxTree cbt) {
+        System.out.println("Select items");
+        TreePath[] paths = cbt.getCheckedPaths();
+        for (TreePath tp : paths) {
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) tp.getLastPathComponent();
+//            for (Object pathPart : tp.getPath()) {
+//                //MyNode node = (MyNode) pathPart;
+//                System.out.print(pathPart + ",");
+//            }
+            JNode mynode = (JNode) node.getUserObject();
+            System.out.println(mynode.attribute);
+        }
+    }
+
+    public ArrayList<JNode> getJNodeChecked(final JCheckBoxTree cbt) {
+        ArrayList<JNode> listJNode = new ArrayList<>();
+        TreePath[] paths = cbt.getCheckedPaths();
+        for (TreePath tp : paths) {
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) tp.getLastPathComponent();
+            JNode mynode = (JNode) node.getUserObject();
+            listJNode.add(mynode);
+        }
+        return listJNode;
+    }
+
+    public final class JTreeNode extends DefaultMutableTreeNode {
+
+        private final JNode MyNode;
+
+        public JTreeNode(JNode myData) {
+            this.MyNode = myData;
+        }
+
+        public JNode getMyData() {
+            return MyNode;
+        }
+    }
+
+    public static class JNode {
+
+        String text;
+        JSONObject attribute;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1855,7 +1927,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
@@ -1884,15 +1955,14 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    public static javax.swing.JPanel jPanelRegionTree;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
-    public static javax.swing.JTable tablecounty;
     public static javax.swing.JTable tabletype;
     public static javax.swing.JTextPane tbPublishinfo;
     public static javax.swing.JTextPane tbcreateindexinfor;
