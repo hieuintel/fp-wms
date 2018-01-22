@@ -6,13 +6,9 @@
 package scsi.db;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import static scsi.db.Connect.getConnectPostgreSQL;
-import static scsi.db.Core.run_SQL;
 
 /**
  *
@@ -22,6 +18,8 @@ public class Test {
 
     /**
      * @param args the command line arguments
+     * @throws java.sql.SQLException
+     * @throws java.io.UnsupportedEncodingException
      */
     public static void main(String[] args) throws SQLException, UnsupportedEncodingException {
         // TODO code application logic here

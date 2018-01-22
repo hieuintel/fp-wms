@@ -4,7 +4,10 @@
  * and open the template in the editor.
  */
 package scsi.agri;
-
+/**
+ *
+ * @author HieuIntel
+ */
 import it.geosolutions.geoserver.rest.GeoServerRESTReader;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -29,7 +32,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
-import javax.swing.JTree;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.AttributeSet;
@@ -39,7 +41,6 @@ import javax.swing.text.StyleContext;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -922,23 +923,16 @@ public class Main extends javax.swing.JFrame {
                             .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel13Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(tbdataupload, javax.swing.GroupLayout.PREFERRED_SIZE, 678, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(tbsetexecutorupload, javax.swing.GroupLayout.PREFERRED_SIZE, 678, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(tbdataupload, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 678, Short.MAX_VALUE)
+                            .addComponent(tbsetexecutorupload, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 678, Short.MAX_VALUE))
                         .addGap(8, 8, 8)))
-                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(bttestPGconnection2, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(bttestPGconnection2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btuploadraster2pg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btsetdataupload, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btsetexecutorupload, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
-
-        jPanel13Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btsetdataupload, btsetexecutorupload, bttestPGconnection2, btuploadraster2pg});
-
-        jPanel13Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {tbdataupload, tbsetexecutorupload});
-
         jPanel13Layout.setVerticalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel13Layout.createSequentialGroup()
@@ -1011,7 +1005,7 @@ public class Main extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public static String openedfolder = "E:\\Projects\\Yonsei\\Agriculture\\AgriAdmin";
+    public static String openedfolder = "";
     public static JCheckBoxTree regionTree;
     public static DefaultMutableTreeNode rootnode;
     //System.getProperty("user.home");
@@ -1384,7 +1378,6 @@ public class Main extends javax.swing.JFrame {
         } else {
             tbcreateindexinfor.setText("");
             List<String> listtype = new ArrayList<String>();
-            List<Integer> listcounty = new ArrayList<Integer>();
 
             DefaultTableModel model = (DefaultTableModel) tabletype.getModel();
             int rowcount = model.getRowCount();
@@ -1408,7 +1401,7 @@ public class Main extends javax.swing.JFrame {
 
             tbcreateindexinfor.setText("");
             btcreateindex.setEnabled(false);
-            ThreadCreateIndex task1 = new ThreadCreateIndex("Create Index Task1");
+            ThreadCreateIndex task1 = new ThreadCreateIndex("Create Index Task 1");
         }
     }//GEN-LAST:event_btcreateindexActionPerformed
 
@@ -1815,15 +1808,10 @@ public class Main extends javax.swing.JFrame {
                 btcreateindex.setEnabled(true);
                 appendToPane(tbcreateindexinfor, "Complete..." + getCurrentTimeStamp() + "\n", Color.BLUE);
                 Thread.sleep(0);
-            } catch (InterruptedException e) {
+            } catch (InterruptedException | JSONException e) {
                 appendToPane(Main.tbcreateindexinfor, e.getMessage() + "\n", Color.RED);
-            } catch (ParseException ex) {
+            } catch (ParseException | SQLException ex) {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                appendToPane(Main.tbcreateindexinfor, ex.getMessage() + "\n", Color.RED);
-            } catch (SQLException ex) {
-                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                appendToPane(Main.tbcreateindexinfor, ex.getMessage() + "\n", Color.RED);
-            } catch (JSONException ex) {
                 appendToPane(Main.tbcreateindexinfor, ex.getMessage() + "\n", Color.RED);
             }
         }

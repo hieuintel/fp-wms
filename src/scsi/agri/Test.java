@@ -4,16 +4,16 @@
  * and open the template in the editor.
  */
 package scsi.agri;
-
-import java.io.File;
-import java.io.FileInputStream;
+/**
+ *
+ * @author HieuIntel
+ */
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import jcifs.smb.NtlmPasswordAuthentication;
 import jcifs.smb.SmbException;
 import jcifs.smb.SmbFile;
-import jcifs.smb.SmbFileOutputStream;
 
 /**
  *
@@ -39,23 +39,6 @@ public class Test {
             for (SmbFile f : dir.listFiles()) {
                 System.out.println(f.getName());
             }
-//            File fileSource = new File("E:\\Projects\\Yonsei\\Agriculture\\Deploy Argi\\Quick Help.txt");
-//            SmbFile smbFileTarget = new SmbFile(GEOSERVERDATAPATH + "/Quick Help.txt", auth);
-//            // input and output stream
-//            FileInputStream fis = new FileInputStream(fileSource);
-//            SmbFileOutputStream smbfos = new SmbFileOutputStream(smbFileTarget);
-//            // writing data
-//            try {
-//                // 16 kb
-//                final byte[] b = new byte[16 * 1024];
-//                int read = 0;
-//                while ((read = fis.read(b, 0, b.length)) > 0) {
-//                    smbfos.write(b, 0, read);
-//                }
-//            } finally {
-//                fis.close();
-//                smbfos.close();
-//            }
         } else if (TYPEGEOSERVERCONNECTION == "local") {
 
         }

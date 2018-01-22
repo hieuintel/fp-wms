@@ -31,15 +31,15 @@ public class UpdateIndexTable {
     /**
      * @param args the command line arguments
      */
+    //Test code
     public static void main(String[] args) throws ParseException, SQLException {
         // TODO code application logic here
-        //SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-        //Date date = formatter.parse("20000101");
-        int countryid = 213;
-        int year = 2000;
-        //String type = "pre";
-        String[] listtype = {"max", "min", "t2m", "pre", "sho"};
-        //int[] listyear = {2000, 2001, 2002, 2003, 2004, 2005, 2006, 2008, 2009, 2011, 2012, 2013, 2014};
+//        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+//        Date date = formatter.parse("20000101");
+//        int countryid = 213;
+//        int year = 2000;
+//        String[] listtype = {"max", "min", "t2m", "pre", "sho"};
+//        int[] listyear = {2000, 2001, 2002, 2003, 2004, 2005, 2006, 2008, 2009, 2011, 2012, 2013, 2014};
 //        for (int y = 0; y < listyear.length; y++) {
 //            update_IndexbyYearCountry(listyear[y], countryid, type);
 //        }
@@ -47,12 +47,13 @@ public class UpdateIndexTable {
 //        for (int t = 0; t < listtype.length; t++) {
 //            update_IndexbyYearCountry(2014, countryid, listtype[t]);
 //        }
+
 //        for (int i = 0; i < 15; i++) {
 //            year = 2000 + i;
 //            update_IndexbyYearCountry(year, countryid, type);
 //        }
+
 //        update_IndexbyYearCountry(2002, 213, "t2m");
-        update_IndexbyYear(year, 213, 1, "max", false);
     }
 
     //Áp dụng cho tính giá trị của một nước trong một năm
@@ -207,11 +208,6 @@ public class UpdateIndexTable {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
         SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd");
 
-//        Calendar cal = Calendar.getInstance();
-//        cal.setTime(date);
-//        int year = cal.get(Calendar.YEAR);
-//        String connectURLPostgreSQL = Config.connectURLPG + year;
-//        Connection connectPostgreSQL = Connect.getConnectPostgreSQL(connectURLPostgreSQL, Config.userPG, Config.pwPG);
         String countryname = "korea";
         if (id_0 == 213) {
             countryname = "korea";

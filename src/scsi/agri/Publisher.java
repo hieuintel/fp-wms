@@ -6,36 +6,12 @@
 package scsi.agri;
 
 import it.geosolutions.geoserver.rest.*;
-import it.geosolutions.geoserver.rest.decoder.RESTLayerGroupList;
-import it.geosolutions.geoserver.rest.decoder.RESTLayerList;
-import it.geosolutions.geoserver.rest.encoder.GSLayerEncoder;
-import it.geosolutions.geoserver.rest.encoder.GSLayerGroupEncoder;
-import it.geosolutions.geoserver.rest.encoder.coverage.GSImageMosaicEncoder;
 import java.awt.Color;
 import java.io.File;
-import java.io.FileFilter;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
-import java.util.logging.Level;
-import org.apache.log4j.Logger;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.ParserConfigurationException;
-import jcifs.smb.NtlmPasswordAuthentication;
-import jcifs.smb.SmbException;
-import jcifs.smb.SmbFile;
-import jcifs.smb.SmbFileInputStream;
-import jcifs.smb.SmbFileOutputStream;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Node;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 import static scsi.agri.Main.appendToPane;
 import static scsi.agri.Main.getCurrentTimeStamp;
 
@@ -48,12 +24,11 @@ public class Publisher {
     /**
      * @param args the command line arguments
      */
-    //public static String RESTURL = "http://192.168.10.143:8080/geoserver";
     public static String RESTURL = "http://165.132.139.249:8080/geoserver";
-    //public static String RESTURL = "http://165.132.139.249:8081/geoserver";
     public static String RESTUSER = "admin";
     public static String RESTPW = "geoserver";
 
+    //Test code
     public static void main(String[] args) throws MalformedURLException, FileNotFoundException {
         // TODO code application logic here
 //        for (int i = 0; i < 14; i++) {
@@ -62,11 +37,16 @@ public class Publisher {
 //            publish_rasterLayerfromPostGIS(y);
 //        }
 
-//        publish_rasterLayerfromPostGIS("2014");
-        publish_rasterLayerfromPostGISUImode("E:\\XMLTest");
+//        publish_rasterLayerfromPostGISUImode("E:\\XMLTest");
     }
 
-    public static void publish_rasterLayerfromPostGIS(String dbname) throws MalformedURLException, FileNotFoundException {
+    /**
+     * Publish all data in one database to GeoServer
+     *
+     * @ Ignore it when using UI mode
+     */
+    public static void publish_rasterLayerfromPostGIS(String dbname)
+            throws MalformedURLException, FileNotFoundException {
 
         GeoServerRESTReader reader = new GeoServerRESTReader(RESTURL, RESTUSER, RESTPW);
         GeoServerRESTPublisher publisher = new GeoServerRESTPublisher(RESTURL, RESTUSER, RESTPW);
@@ -85,7 +65,12 @@ public class Publisher {
         }
     }
 
-    public static void publish_layers(GeoServerRESTReader reader, GeoServerRESTPublisher publisher, String dbname)
+    /**
+     * Publish all data in one database to GeoServer
+     * @ Ignore it when using UI mode
+     */
+    public static void publish_layers(GeoServerRESTReader reader,
+            GeoServerRESTPublisher publisher, String dbname)
             throws FileNotFoundException {
         String path = GenerateXMLConfig.path_storeXMLconfig + dbname;
         List<File> listfile = scsi.file.Core.get_FileinFolder(path);
@@ -106,7 +91,9 @@ public class Publisher {
         }
     }
 
-    public static void publish_rasterLayerfromPostGISUImode(String XMLfolder) throws MalformedURLException, FileNotFoundException {
+    //Publish map layers to GeoServer using data from PostGIS and UI mode
+    public static void publish_rasterLayerfromPostGISUImode(String XMLfolder)
+            throws MalformedURLException, FileNotFoundException {
         File file = new File(XMLfolder);
         String[] directories = file.list(new FilenameFilter() {
             @Override
@@ -137,7 +124,9 @@ public class Publisher {
         }
     }
 
-    public static void publish_layersUImode(GeoServerRESTReader reader, GeoServerRESTPublisher publisher, String dbname, String XMLfolder)
+    //Publish map layers to GeoServer using data from PostGIS and UI mode
+    public static void publish_layersUImode(GeoServerRESTReader reader,
+            GeoServerRESTPublisher publisher, String dbname, String XMLfolder)
             throws FileNotFoundException {
         String path = XMLfolder + "\\" + dbname;
         List<File> listfile = scsi.file.Core.get_FileinFolder(path);
@@ -161,6 +150,7 @@ public class Publisher {
         }
     }
 
+    //Check a string is number or not
     public static boolean isNumeric(String str) {
         try {
             double d = Double.parseDouble(str);

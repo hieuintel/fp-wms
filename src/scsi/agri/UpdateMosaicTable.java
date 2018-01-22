@@ -9,11 +9,6 @@ import java.awt.Color;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import javax.swing.JTextPane;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyleContext;
 import static scsi.agri.Main.appendToPane;
 import static scsi.agri.Main.getCurrentTimeStamp;
 import scsi.db.Config;
@@ -30,6 +25,7 @@ public class UpdateMosaicTable {
     /**
      * @param args the command line arguments
      */
+    //Test code
     public static void main(String[] args) throws SQLException {
         // TODO code application logic here
 //        for (int i = 0; i < 16; i++) {
@@ -39,14 +35,14 @@ public class UpdateMosaicTable {
 //            update_MosaicTable(y, "china");
 //            update_MosaicTable(y, "usa");
 //        }
-//
-//        String year = "2014";
-//        update_MosaicTable(year, "korea");
-//        update_MosaicTable(year, "china");
-//        update_MosaicTable(year, "usa");
-
     }
 
+    /**
+     * Update MosaicTable in PostGIS to support publish a layer to GeoServer
+     * @param dbname
+     * @param shmname_coutry
+     * @throws SQLException 
+     */
     public static void update_MosaicTable(String dbname, String shmname_coutry) throws SQLException {
         String connectURLPostgreSQL = Config.connectURLPG + dbname;
         Connection connectPostgreSQL = Connect.getConnectPostgreSQL(connectURLPostgreSQL, Config.userPG, Config.pwPG);

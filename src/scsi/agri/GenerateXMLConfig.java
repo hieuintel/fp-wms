@@ -10,13 +10,11 @@ import scsi.db.Connect;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import static scsi.agri.Main.appendToPane;
 import static scsi.agri.Main.getCurrentTimeStamp;
 import scsi.db.Config;
-import static scsi.db.Core.execute_SQL;
 import static scsi.db.Core.run_SQL;
 import static scsi.file.Core.write_File;
 import static scsi.text.Core.read_TextFile;
@@ -32,6 +30,7 @@ public class GenerateXMLConfig {
      */
     public static String path_storeXMLconfig = "C:/AgriXMLCNtest/";
 
+    //Test code
     public static void main(String[] args) throws SQLException, IOException {
         // TODO code application logic here
 //        for (int i = 0; i < 16; i++) {
@@ -47,6 +46,14 @@ public class GenerateXMLConfig {
 //        }
     }
 
+    /**
+     *
+     * @param dbname
+     * @throws SQLException
+     * @throws IOException Generate XML config file for GeoServer using running
+     * code directly
+     * @ Ignore this function when using UI mode
+     */
     public static void render_imagemosaicjdbcxml(String dbname) throws SQLException, IOException {
         String connectURLPostgreSQL = Config.connectURLPG + dbname;
         Connection connectPostgreSQL = Connect.getConnectPostgreSQL(connectURLPostgreSQL, Config.userPG, Config.pwPG);
@@ -85,6 +92,11 @@ public class GenerateXMLConfig {
 
     }
 
+    /**
+     * Generate XML config file for GeoServer using running code directly This
+     * is a extention of function above when we set a specific region Ignore
+     * this function when using UI mode
+     */
     public static void render_imagemosaicjdbcxmlbyRegion(String dbname, String region) throws SQLException, IOException {
         String connectURLPostgreSQL = Config.connectURLPG + dbname;
         Connection connectPostgreSQL = Connect.getConnectPostgreSQL(connectURLPostgreSQL, Config.userPG, Config.pwPG);
@@ -123,6 +135,16 @@ public class GenerateXMLConfig {
 
     }
 
+    /**
+     * Generate XML config file for GeoServer using UI
+     *
+     * @param dbname
+     * @param region
+     * @param pathXMLtemplate
+     * @param pathTosave
+     * @throws SQLException
+     * @throws IOException
+     */
     public static void render_imagemosaicjdbcxmlbyRegionUImode(String dbname, String region, String pathXMLtemplate, String pathTosave) throws SQLException, IOException {
         String connectURLPostgreSQL = Config.connectURLPG + dbname;
         Connection connectPostgreSQL = Connect.getConnectPostgreSQL(connectURLPostgreSQL, Config.userPG, Config.pwPG);
@@ -139,7 +161,7 @@ public class GenerateXMLConfig {
             String name = res.getString("name");
             String newxml = xmlstring.replaceAll("tblname", name);
             scsi.file.Core.write_File(new File(pathstore + "\\" + name + ".xml"), newxml, Boolean.FALSE);
-            System.out.println("Created " + pathstore + "\\" + name + ".xml");
+            //System.out.println("Created " + pathstore + "\\" + name + ".xml");
             try {
                 appendToPane(Main.tbgenerateXMLinfor, "Created " + pathstore + "\\" + name + ".xml " + getCurrentTimeStamp() + "\n", Color.BLACK);
             } catch (Exception e) {
