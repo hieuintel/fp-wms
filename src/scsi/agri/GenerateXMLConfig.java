@@ -146,42 +146,52 @@ public class GenerateXMLConfig {
      * @throws IOException
      */
     public static void render_imagemosaicjdbcxmlbyRegionUImode(String dbname, String region, String pathXMLtemplate, String pathTosave) throws SQLException, IOException {
+
         String connectURLPostgreSQL = Config.connectURLPG + dbname;
         Connection connectPostgreSQL = Connect.getConnectPostgreSQL(connectURLPostgreSQL, Config.userPG, Config.pwPG);
-        String sql = "select DISTINCT name from mosaic where name like '" + region + "%' order by name";
-        ResultSet res = run_SQL(connectPostgreSQL, sql);
-        String pathstore = pathTosave + "\\" + dbname;
-        scsi.file.Core.AutoCreatFolder(pathstore);
-
-        String xmlstring = read_TextFile(pathXMLtemplate + "\\imagemosaicjdbc.xml");
-
-        xmlstring = xmlstring.replaceAll("dbname", dbname);
-
-        while (res.next()) {
-            String name = res.getString("name");
-            String newxml = xmlstring.replaceAll("tblname", name);
-            scsi.file.Core.write_File(new File(pathstore + "\\" + name + ".xml"), newxml, Boolean.FALSE);
-            //System.out.println("Created " + pathstore + "\\" + name + ".xml");
+        if (connectPostgreSQL == null) {
             try {
-                appendToPane(Main.tbgenerateXMLinfor, "Created " + pathstore + "\\" + name + ".xml " + getCurrentTimeStamp() + "\n", Color.BLACK);
+                appendToPane(Main.tbgenerateXMLinfor, "Could not connect to PostgreSQL" + "\n", Color.RED);
             } catch (Exception e) {
             }
+        } else {
+            String sql = "select DISTINCT name from mosaic where name like '" + region + "%' order by name";
+            ResultSet res = run_SQL(connectPostgreSQL, sql);
+            String pathstore = pathTosave + "\\" + dbname;
+            scsi.file.Core.AutoCreatFolder(pathstore);
+
+            String xmlstring = read_TextFile(pathXMLtemplate + "\\imagemosaicjdbc.xml");
+
+            xmlstring = xmlstring.replaceAll("dbname", dbname);
+
+            while (res.next()) {
+                String name = res.getString("name");
+                String newxml = xmlstring.replaceAll("tblname", name);
+                scsi.file.Core.write_File(new File(pathstore + "\\" + name + ".xml"), newxml, Boolean.FALSE);
+                //System.out.println("Created " + pathstore + "\\" + name + ".xml");
+                try {
+                    appendToPane(Main.tbgenerateXMLinfor, "Created " + pathstore + "\\" + name + ".xml " + getCurrentTimeStamp() + "\n", Color.BLACK);
+                } catch (Exception e) {
+                }
+            }
+            //For GeoServer
+            String pathdatageoserver = pathTosave + "\\data\\" + dbname;
+            scsi.file.Core.AutoCreatFolder(pathdatageoserver);
+            xmlstring = read_TextFile(pathXMLtemplate + "\\connect.pgraster.xml.inc");
+
+            xmlstring = xmlstring.replaceAll("ur", Config.userPG);
+            String[] st = xmlstring.split("pw");
+            xmlstring = st[0] + Config.pwPG + st[1];
+            xmlstring = xmlstring.replaceAll("host", Config.hostPG);
+            xmlstring = xmlstring.replaceAll("port", Config.portPG);
+            xmlstring = xmlstring.replaceAll("dbname", dbname);
+
+            write_File(new File(pathdatageoserver + "\\connect.pgraster.xml.inc"), xmlstring, Boolean.FALSE);
+
+            xmlstring = read_TextFile(pathXMLtemplate + "\\mapping.pgraster.xml.inc");
+            write_File(new File(pathdatageoserver + "\\mapping.pgraster.xml.inc"), xmlstring, Boolean.FALSE);
+            connectPostgreSQL.close();
         }
-        //For GeoServer
-        String pathdatageoserver = pathTosave + "\\data\\" + dbname;
-        scsi.file.Core.AutoCreatFolder(pathdatageoserver);
-        xmlstring = read_TextFile(pathXMLtemplate + "\\connect.pgraster.xml.inc");
-
-        xmlstring = xmlstring.replaceAll("ur", Config.userPG);
-        String[] st = xmlstring.split("pw");
-        xmlstring = st[0] + Config.pwPG + st[1];
-        xmlstring = xmlstring.replaceAll("host", Config.hostPG);
-        xmlstring = xmlstring.replaceAll("port", Config.portPG);
-        xmlstring = xmlstring.replaceAll("dbname", dbname);
-
-        write_File(new File(pathdatageoserver + "\\connect.pgraster.xml.inc"), xmlstring, Boolean.FALSE);
-
-        xmlstring = read_TextFile(pathXMLtemplate + "\\mapping.pgraster.xml.inc");
-        write_File(new File(pathdatageoserver + "\\mapping.pgraster.xml.inc"), xmlstring, Boolean.FALSE);
+        
     }
 }

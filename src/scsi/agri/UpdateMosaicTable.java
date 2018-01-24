@@ -39,55 +39,64 @@ public class UpdateMosaicTable {
 
     /**
      * Update MosaicTable in PostGIS to support publish a layer to GeoServer
+     *
      * @param dbname
      * @param shmname_coutry
-     * @throws SQLException 
+     * @throws java.sql.SQLException
      */
     public static void update_MosaicTable(String dbname, String shmname_coutry) throws SQLException {
         String connectURLPostgreSQL = Config.connectURLPG + dbname;
         Connection connectPostgreSQL = Connect.getConnectPostgreSQL(connectURLPostgreSQL, Config.userPG, Config.pwPG);
-
-        String sql = "SELECT table_name FROM information_schema.tables WHERE table_schema = '" + shmname_coutry + "'";
-        ResultSet res = run_SQL(connectPostgreSQL, sql);
-        while (res.next()) {
-            //Check exist in table
-            String fulltblname = shmname_coutry + ".\"" + res.getString("table_name") + "\"";
-            String grouptablename = res.getString("table_name").replaceAll("o_2_", "");
-            grouptablename = grouptablename.replaceAll("o_4_", "");
-            grouptablename = grouptablename.replaceAll("o_6_", "");
-            String tblname = shmname_coutry + "." + grouptablename;
-            sql = "Select count(*) as count from mosaic where name ='" + tblname + "' and tiletable='" + fulltblname + "'";
-            //   sql = "Select count(*) from " + "\"" + shmname + "\"" + ".\"" + tablname + "\"" + " where name ='" + tablname + "'";
-            ResultSet rescheck = run_SQL(connectPostgreSQL, sql);
-            if (rescheck == null) {
-                try {
-                    appendToPane(Main.tbupdatemosaicinfor, "Could not check " + fulltblname + " in mosaic table " + getCurrentTimeStamp() + "\n", Color.BLACK);
-                } catch (Exception e) {
-                }
-            } else {
-                while (rescheck.next()) {
-                    if (rescheck.getInt("count") == 0) {
-                        String insert = "INSERT INTO public.mosaic (name, tiletable) VALUES ('" + tblname + "', '" + fulltblname + "')";
-                        boolean check = execute_SQL(connectPostgreSQL, insert);
-                        if (!check) {
-                            System.out.println(fulltblname + " was inserted into mosaic table");
+        if (connectPostgreSQL == null) {
+            try {
+                appendToPane(Main.tbupdatemosaicinfor, "Could not connect to PostgreSQL" + "\n", Color.RED);
+            } catch (Exception e) {
+            }
+        } else {
+            String sql = "SELECT table_name FROM information_schema.tables WHERE table_schema = '" + shmname_coutry + "'";
+            ResultSet res = run_SQL(connectPostgreSQL, sql);
+            while (res.next()) {
+                //Check exist in table
+                String fulltblname = shmname_coutry + ".\"" + res.getString("table_name") + "\"";
+                String grouptablename = res.getString("table_name").replaceAll("o_2_", "");
+                grouptablename = grouptablename.replaceAll("o_4_", "");
+                grouptablename = grouptablename.replaceAll("o_6_", "");
+                String tblname = shmname_coutry + "." + grouptablename;
+                sql = "Select count(*) as count from mosaic where name ='" + tblname + "' and tiletable='" + fulltblname + "'";
+                //   sql = "Select count(*) from " + "\"" + shmname + "\"" + ".\"" + tablname + "\"" + " where name ='" + tablname + "'";
+                ResultSet rescheck = run_SQL(connectPostgreSQL, sql);
+                if (rescheck == null) {
+                    try {
+                        appendToPane(Main.tbupdatemosaicinfor, "Could not check " + fulltblname + " in mosaic table " + getCurrentTimeStamp() + "\n", Color.ORANGE);
+                    } catch (Exception e) {
+                    }
+                } else {
+                    while (rescheck.next()) {
+                        if (rescheck.getInt("count") == 0) {
+                            String insert = "INSERT INTO public.mosaic (name, tiletable) VALUES ('" + tblname + "', '" + fulltblname + "')";
+                            boolean check = execute_SQL(connectPostgreSQL, insert);
+                            if (!check) {
+                                System.out.println(fulltblname + " was inserted into mosaic table");
+                                try {
+                                    appendToPane(Main.tbupdatemosaicinfor, fulltblname + " was inserted into mosaic table " + getCurrentTimeStamp() + "\n", Color.BLACK);
+                                } catch (Exception e) {
+                                }
+                                //Render xml file
+                            }
+                        } else {
+                            System.out.println(fulltblname + " is exists in mosaic table");
                             try {
-                                appendToPane(Main.tbupdatemosaicinfor, fulltblname + " was inserted into mosaic table " + getCurrentTimeStamp() + "\n", Color.BLACK);
+                                appendToPane(Main.tbupdatemosaicinfor, fulltblname + " is exists in mosaic table " + getCurrentTimeStamp() + "\n", Color.BLACK);
                             } catch (Exception e) {
                             }
-                            //Render xml file
-                        }
-                    } else {
-                        System.out.println(fulltblname + " is exists in mosaic table");
-                        try {
-                            appendToPane(Main.tbupdatemosaicinfor, fulltblname + " is exists in mosaic table " + getCurrentTimeStamp() + "\n", Color.BLACK);
-                        } catch (Exception e) {
                         }
                     }
                 }
             }
-
+            connectPostgreSQL.close();
+            if (!connectPostgreSQL.isClosed()) {
+                connectPostgreSQL.close();
+            }
         }
     }
-
 }

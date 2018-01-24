@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package scsi.agri;
+
 /**
  *
  * @author HieuIntel
@@ -112,6 +113,25 @@ public class Main extends javax.swing.JFrame {
         cbregion = new javax.swing.JComboBox();
         jLabel21 = new javax.swing.JLabel();
         jLabel32 = new javax.swing.JLabel();
+        jPanel12 = new javax.swing.JPanel();
+        jPanel13 = new javax.swing.JPanel();
+        jLabel27 = new javax.swing.JLabel();
+        jLabel28 = new javax.swing.JLabel();
+        tbdbname = new javax.swing.JTextField();
+        tbshmname = new javax.swing.JTextField();
+        tbespg = new javax.swing.JTextField();
+        jLabel29 = new javax.swing.JLabel();
+        jLabel31 = new javax.swing.JLabel();
+        tbdatatype = new javax.swing.JTextField();
+        jLabel30 = new javax.swing.JLabel();
+        btuploadraster2pg = new javax.swing.JButton();
+        bttestPGconnection2 = new javax.swing.JButton();
+        jLabel25 = new javax.swing.JLabel();
+        jLabel26 = new javax.swing.JLabel();
+        tbdataupload = new javax.swing.JTextField();
+        tbsetexecutorupload = new javax.swing.JTextField();
+        btsetexecutorupload = new javax.swing.JButton();
+        btsetdataupload = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel3 = new javax.swing.JPanel();
@@ -152,25 +172,6 @@ public class Main extends javax.swing.JFrame {
         jLabel23 = new javax.swing.JLabel();
         checkoverwriteindex = new javax.swing.JCheckBox();
         jPanelRegionTree = new javax.swing.JPanel();
-        jPanel12 = new javax.swing.JPanel();
-        jPanel13 = new javax.swing.JPanel();
-        jLabel27 = new javax.swing.JLabel();
-        jLabel28 = new javax.swing.JLabel();
-        tbdbname = new javax.swing.JTextField();
-        tbshmname = new javax.swing.JTextField();
-        tbespg = new javax.swing.JTextField();
-        jLabel29 = new javax.swing.JLabel();
-        jLabel31 = new javax.swing.JLabel();
-        tbdatatype = new javax.swing.JTextField();
-        jLabel30 = new javax.swing.JLabel();
-        btuploadraster2pg = new javax.swing.JButton();
-        bttestPGconnection2 = new javax.swing.JButton();
-        jLabel25 = new javax.swing.JLabel();
-        jLabel26 = new javax.swing.JLabel();
-        tbdataupload = new javax.swing.JTextField();
-        tbsetexecutorupload = new javax.swing.JTextField();
-        btsetexecutorupload = new javax.swing.JButton();
-        btsetdataupload = new javax.swing.JButton();
 
         jButton2.setText("Run");
 
@@ -181,6 +182,8 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        jTabbedPane1.setPreferredSize(new java.awt.Dimension(807, 479));
+
         jPanel7.setBackground(new java.awt.Color(204, 204, 204));
 
         jLabel9.setForeground(new java.awt.Color(0, 51, 204));
@@ -189,7 +192,7 @@ public class Main extends javax.swing.JFrame {
         jLabel10.setForeground(new java.awt.Color(0, 51, 204));
         jLabel10.setText("PORT");
 
-        tbhostGS.setText("165.132.139.249");
+        tbhostGS.setText("172.30.161.156");
 
         tbportGS.setText("8080");
 
@@ -265,7 +268,7 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
                     .addComponent(tbpassGS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addComponent(bttestGSconnection)
                 .addContainerGap())
         );
@@ -283,7 +286,7 @@ public class Main extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(0, 51, 204));
         jLabel5.setText("PORT");
 
-        tbhostPG.setText("165.132.139.131");
+        tbhostPG.setText("172.30.161.156");
 
         tbportPG.setText("5432");
 
@@ -295,7 +298,7 @@ public class Main extends javax.swing.JFrame {
         jLabel7.setForeground(new java.awt.Color(0, 51, 204));
         jLabel7.setText("PASS");
 
-        tbpassPG.setText("P@$$w0rd00");
+        tbpassPG.setText("postgres");
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel8.setText("PostgreSQL Connection");
@@ -361,7 +364,7 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(tbpassPG, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(bttestPGconnection)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         tbhostPG.getAccessibleContext().setAccessibleName("tbhostPG");
@@ -488,6 +491,156 @@ public class Main extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Configuration", jPanel9);
 
+        jPanel13.setBackground(new java.awt.Color(204, 204, 204));
+
+        jLabel27.setText("Database");
+
+        jLabel28.setText("Schema");
+
+        tbdbname.setText("2000");
+
+        tbshmname.setText("korea");
+
+        tbespg.setText("4326");
+
+        jLabel29.setText("ESPG");
+
+        jLabel31.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel31.setText("Other parameters");
+
+        tbdatatype.setText("tif");
+
+        jLabel30.setText("Format");
+
+        btuploadraster2pg.setText("Upload");
+        btuploadraster2pg.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btuploadraster2pgActionPerformed(evt);
+            }
+        });
+
+        bttestPGconnection2.setText("Test");
+        bttestPGconnection2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bttestPGconnection2ActionPerformed(evt);
+            }
+        });
+
+        jLabel25.setText("Executor");
+
+        jLabel26.setText("Data Source");
+
+        btsetexecutorupload.setText("Choose");
+        btsetexecutorupload.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btsetexecutoruploadActionPerformed(evt);
+            }
+        });
+
+        btsetdataupload.setText("Choose");
+        btsetdataupload.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btsetdatauploadActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
+        jPanel13.setLayout(jPanel13Layout);
+        jPanel13Layout.setHorizontalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel13Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel13Layout.createSequentialGroup()
+                                .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tbdbname)
+                                .addGap(23, 23, 23)
+                                .addComponent(jLabel28, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tbshmname)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel30, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tbdatatype)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel29, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tbespg))
+                            .addComponent(jLabel31))
+                        .addGap(161, 161, 161))
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel26)
+                            .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tbdataupload, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE)
+                            .addComponent(tbsetexecutorupload, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE))
+                        .addGap(8, 8, 8)))
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(bttestPGconnection2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btuploadraster2pg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btsetdataupload, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btsetexecutorupload, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel13Layout.setVerticalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel13Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(btsetexecutorupload)
+                            .addComponent(tbsetexecutorupload, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel25))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tbdataupload, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel26)
+                            .addComponent(btsetdataupload))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                        .addComponent(bttestPGconnection2))
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel31)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jLabel27)
+                            .addComponent(tbdbname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel28)
+                            .addComponent(tbshmname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel30)
+                            .addComponent(tbdatatype, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel29)
+                            .addComponent(tbespg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btuploadraster2pg)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
+        jPanel12.setLayout(jPanel12Layout);
+        jPanel12Layout.setHorizontalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel12Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel12Layout.setVerticalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel12Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(275, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Upload Data", jPanel12);
+
         jLabel1.setForeground(new java.awt.Color(0, 51, 255));
         jLabel1.setText("Update Mosaic Table");
 
@@ -507,7 +660,7 @@ public class Main extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btupdatemosaictable)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 699, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 697, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addContainerGap())
             .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -520,7 +673,7 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(btupdatemosaictable))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Step 1", jPanel3);
@@ -624,7 +777,7 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 164, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 140, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addContainerGap())
             .addComponent(jScrollPane3)
@@ -680,7 +833,7 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(tbpathtoXML, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btsetXMLdata, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                 .addComponent(btpublishLayer, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(88, 88, 88)
                 .addComponent(jLabel3)
@@ -802,11 +955,11 @@ public class Main extends javax.swing.JFrame {
                         .addComponent(btgetlistcounty)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel23)))
-                .addContainerGap(493, Short.MAX_VALUE))
+                .addContainerGap(519, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                     .addGap(392, 392, 392)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 482, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)))
         );
 
         jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btgetlistcounty, btgetlisttype});
@@ -820,7 +973,7 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jLabel22))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btgetlistcounty)
                     .addComponent(jLabel23))
@@ -832,172 +985,20 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(checkoverwriteindex))
                 .addContainerGap())
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE))
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Create Index", jPanel2);
-
-        jPanel13.setBackground(new java.awt.Color(204, 204, 204));
-
-        jLabel27.setText("Database");
-
-        jLabel28.setText("Schema");
-
-        tbdbname.setText("2000");
-
-        tbshmname.setText("korea");
-
-        tbespg.setText("4326");
-
-        jLabel29.setText("ESPG");
-
-        jLabel31.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel31.setText("Other parameters");
-
-        tbdatatype.setText("tif");
-
-        jLabel30.setText("Format");
-
-        btuploadraster2pg.setText("Upload");
-        btuploadraster2pg.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btuploadraster2pgActionPerformed(evt);
-            }
-        });
-
-        bttestPGconnection2.setText("Test");
-        bttestPGconnection2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bttestPGconnection2ActionPerformed(evt);
-            }
-        });
-
-        jLabel25.setText("Executor");
-
-        jLabel26.setText("Data Source");
-
-        btsetexecutorupload.setText("Choose");
-        btsetexecutorupload.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btsetexecutoruploadActionPerformed(evt);
-            }
-        });
-
-        btsetdataupload.setText("Choose");
-        btsetdataupload.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btsetdatauploadActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
-        jPanel13.setLayout(jPanel13Layout);
-        jPanel13Layout.setHorizontalGroup(
-            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel13Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel13Layout.createSequentialGroup()
-                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel13Layout.createSequentialGroup()
-                                .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(tbdbname)
-                                .addGap(23, 23, 23)
-                                .addComponent(jLabel28, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(tbshmname)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel30, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(tbdatatype)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel29, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(tbespg))
-                            .addComponent(jLabel31))
-                        .addGap(161, 161, 161))
-                    .addGroup(jPanel13Layout.createSequentialGroup()
-                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel26)
-                            .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tbdataupload, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 678, Short.MAX_VALUE)
-                            .addComponent(tbsetexecutorupload, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 678, Short.MAX_VALUE))
-                        .addGap(8, 8, 8)))
-                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(bttestPGconnection2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btuploadraster2pg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btsetdataupload, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btsetexecutorupload, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        jPanel13Layout.setVerticalGroup(
-            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel13Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel13Layout.createSequentialGroup()
-                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(btsetexecutorupload)
-                            .addComponent(tbsetexecutorupload, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel25))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(tbdataupload, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel26)
-                            .addComponent(btsetdataupload))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
-                        .addComponent(bttestPGconnection2))
-                    .addGroup(jPanel13Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel31)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(jLabel27)
-                            .addComponent(tbdbname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel28)
-                            .addComponent(tbshmname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel30)
-                            .addComponent(tbdatatype, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel29)
-                            .addComponent(tbespg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btuploadraster2pg)
-                .addContainerGap())
-        );
-
-        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
-        jPanel12.setLayout(jPanel12Layout);
-        jPanel12Layout.setHorizontalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel12Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel12Layout.setVerticalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel12Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(269, Short.MAX_VALUE))
-        );
-
-        jTabbedPane1.addTab("Upload Data", jPanel12);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(jTabbedPane1))
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         jTabbedPane1.getAccessibleContext().setAccessibleName("tabMain");
@@ -1022,6 +1023,11 @@ public class Main extends javax.swing.JFrame {
         Connection conntest = Connect.getConnectPostgreSQL(connectURLPostgreSQL, Config.userPG, Config.pwPG);
         if (conntest != null) {
             JOptionPane.showMessageDialog(this, "Connect success!");
+            try {
+                conntest.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
             JOptionPane.showMessageDialog(this, "Could not connect to the Postgre host");
         }
@@ -1088,14 +1094,14 @@ public class Main extends javax.swing.JFrame {
         while (tabletype.getRowCount() > 0) {
             model.removeRow(0);
         }
-        
+
         appendToPane(Main.tbupdatemosaicinfor, "*Please select region and years from Configuration\\Option " + "\n", Color.RED);
-        
+
         appendToPane(Main.tbgenerateXMLinfor, "1. Please select region and years from Configuration\\Option " + "\n", Color.RED);
         appendToPane(Main.tbgenerateXMLinfor, "2. Please select the folder containing XML template files " + "\n", Color.RED);
         appendToPane(Main.tbgenerateXMLinfor, "3. Please select a folder to store XML files " + "\n", Color.RED);
         appendToPane(Main.tbgenerateXMLinfor, "4. Run " + "\n", Color.RED);
-        appendToPane(Main.tbgenerateXMLinfor, "5. After generating XML complete. Go to the folder containing XML files \n",Color.RED);
+        appendToPane(Main.tbgenerateXMLinfor, "5. After generating XML complete. Go to the folder containing XML files \n", Color.RED);
         appendToPane(Main.tbgenerateXMLinfor, " - copy \"data\" folder -> \"GeoServer installation folder\\data_dir\" folder if you are using Windows OS" + "\n", Color.RED);
         appendToPane(Main.tbgenerateXMLinfor, " * Please note that, If you copied this folder before. Don't try overwrite it. Only copy the new year/workspace!" + "\n", Color.RED);
 
@@ -1465,7 +1471,7 @@ public class Main extends javax.swing.JFrame {
                                 batchcontent = batchcontent.replace("espg", tbespg.getText());
                                 batchcontent = batchcontent.replace("shmname", tbshmname.getText());
                                 scsi.text.Core.write_TextFile(new File(tbdataupload.getText() + "/upload.bat"), batchcontent, false);
-                                //Runtime.getRuntime().exec("cmd /c start " + tbdataupload.getText() + "/upload.bat");
+                                Runtime.getRuntime().exec("cmd /c start " + tbdataupload.getText() + "/upload.bat");
                                 System.out.println(batchcontent);
                             } catch (IOException ex) {
                                 JOptionPane.showMessageDialog(this, "Could not read executor file");
@@ -1643,7 +1649,7 @@ public class Main extends javax.swing.JFrame {
                     try {
                         UpdateMosaicTable.update_MosaicTable(String.valueOf(y), region);
                     } catch (SQLException ex) {
-                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                        appendToPane(Main.tbupdatemosaicinfor, ex.getMessage() + "\n", Color.RED);
                     }
                 }
                 Main.btupdatemosaictable.setEnabled(true);
@@ -1784,7 +1790,12 @@ public class Main extends javax.swing.JFrame {
                         //Refer to county
                         for (int y = startyear; y <= endyear; y++) {
                             for (String type : listtype) {
-                                UpdateIndexTable.update_IndexbyYear(y, jnode.attribute.getInt("id_0"), jnode.attribute.getInt("id_1"), jnode.attribute.getInt("id_2"), type, overwrite);
+                                try {
+                                    UpdateIndexTable.update_IndexbyYear(y, jnode.attribute.getInt("id_0"), jnode.attribute.getInt("id_1"), jnode.attribute.getInt("id_2"), type, overwrite);
+                                } catch (Exception e) {
+                                    appendToPane(tbcreateindexinfor, e.getMessage() + "\n", Color.RED);
+                                }
+
                             }
                         }
                     } else {
@@ -1792,7 +1803,12 @@ public class Main extends javax.swing.JFrame {
                             //Refer to state/province
                             for (int y = startyear; y <= endyear; y++) {
                                 for (String type : listtype) {
-                                    UpdateIndexTable.update_IndexbyYear(y, jnode.attribute.getInt("id_0"), jnode.attribute.getInt("id_1"), type, overwrite);
+                                    try {
+                                        UpdateIndexTable.update_IndexbyYear(y, jnode.attribute.getInt("id_0"), jnode.attribute.getInt("id_1"), type, overwrite);
+                                    } catch (Exception e) {
+                                        appendToPane(tbcreateindexinfor, e.getMessage() + "\n", Color.RED);
+                                    }
+
                                 }
                             }
                         } else {
@@ -1808,11 +1824,8 @@ public class Main extends javax.swing.JFrame {
                 btcreateindex.setEnabled(true);
                 appendToPane(tbcreateindexinfor, "Complete..." + getCurrentTimeStamp() + "\n", Color.BLUE);
                 Thread.sleep(0);
-            } catch (InterruptedException | JSONException e) {
+            } catch (InterruptedException e) {
                 appendToPane(Main.tbcreateindexinfor, e.getMessage() + "\n", Color.RED);
-            } catch (ParseException | SQLException ex) {
-                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                appendToPane(Main.tbcreateindexinfor, ex.getMessage() + "\n", Color.RED);
             }
         }
     }

@@ -47,12 +47,10 @@ public class UpdateIndexTable {
 //        for (int t = 0; t < listtype.length; t++) {
 //            update_IndexbyYearCountry(2014, countryid, listtype[t]);
 //        }
-
 //        for (int i = 0; i < 15; i++) {
 //            year = 2000 + i;
 //            update_IndexbyYearCountry(year, countryid, type);
 //        }
-
 //        update_IndexbyYearCountry(2002, 213, "t2m");
     }
 
@@ -123,83 +121,92 @@ public class UpdateIndexTable {
     //Áp dụng cho tính giá trị của một tỉnh/bang trong một năm
     public static void update_IndexbyYear(int year, int id_0, int id_1, String type, Boolean overwrite) throws ParseException, SQLException {
         String connectURLPostgreSQL = Config.connectURLPG + year;
-        Connection connectDatatable = Connect.getConnectPostgreSQL(connectURLPostgreSQL, Config.userPG, Config.pwPG);
-
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-        String connectURLIndextable = Config.connectURLPG + "db_Agri";
-
-        Connection connectIndextable = Connect.getConnectPostgreSQL(connectURLIndextable, Config.userPG, Config.pwPG);
-
-        List<Date> listdate = get_listDate(year + "0101", (year + 1) + "0101");
-        for (int i = 0; i < listdate.size(); i++) {
-            Date date = listdate.get(i);
-            String code = formatter.format(date) + type + id_0 + id_1;
-            //Check overwite at this day
-            if (overwrite) {
-                get_valueIndex(connectDatatable, connectIndextable, date, id_0, id_1, type);
-            } else {
-                //Nếu không ghi đè cần check xem đã tồn tại chưa trước khi tiếp tục
-                String sqlcheck = "select count(*) from tbl_index where code='" + code + "'";
-                ResultSet rescheck = run_SQL(connectIndextable, sqlcheck);
-                while (rescheck.next()) {
-                    Double count = rescheck.getDouble("count");
-                    if (count > 0) {
-                        //Exist. Do nothing
-                        System.out.println(code + " is exist");
-                        try {
-                            appendToPane(Main.tbcreateindexinfor, code + " is exist " + getCurrentTimeStamp() + "\n", Color.ORANGE);
-                        } catch (Exception e) {
+        Connection connectIndextable;
+        try (Connection connectDatatable = Connect.getConnectPostgreSQL(connectURLPostgreSQL, Config.userPG, Config.pwPG)) {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            String connectURLIndextable = Config.connectURLPG + "db_Agri";
+            connectIndextable = Connect.getConnectPostgreSQL(connectURLIndextable, Config.userPG, Config.pwPG);
+            List<Date> listdate = get_listDate(year + "0101", (year + 1) + "0101");
+            for (int i = 0; i < listdate.size(); i++) {
+                Date date = listdate.get(i);
+                String code = formatter.format(date) + type + id_0 + id_1;
+                //Check overwite at this day
+                if (overwrite) {
+                    get_valueIndex(connectDatatable, connectIndextable, date, id_0, id_1, type);
+                } else {
+                    //Nếu không ghi đè cần check xem đã tồn tại chưa trước khi tiếp tục
+                    String sqlcheck = "select count(*) from tbl_index where code='" + code + "'";
+                    ResultSet rescheck = run_SQL(connectIndextable, sqlcheck);
+                    while (rescheck.next()) {
+                        Double count = rescheck.getDouble("count");
+                        if (count > 0) {
+                            //Exist. Do nothing
+                            System.out.println(code + " is exist");
+                            try {
+                                appendToPane(Main.tbcreateindexinfor, code + " is exist " + getCurrentTimeStamp() + "\n", Color.ORANGE);
+                            } catch (Exception e) {
+                            }
+                        } else {
+                            get_valueIndex(connectDatatable, connectIndextable, date, id_0, id_1, type);
                         }
-                    } else {
-                        get_valueIndex(connectDatatable, connectIndextable, date, id_0, id_1, type);
                     }
                 }
-            }
 
+            }
         }
-        connectDatatable.close();
         connectIndextable.close();
     }
 
     //Áp dụng cho tính giá trị của một county trong một năm
-    public static void update_IndexbyYear(int year, int id_0, int id_1, int id_2, String type, Boolean overwrite) throws ParseException, SQLException {
+    public static void update_IndexbyYear(int year, int id_0, int id_1, int id_2, String type, Boolean overwrite) throws SQLException, SQLException, ParseException {
         String connectURLPostgreSQL = Config.connectURLPG + year;
         Connection connectDatatable = Connect.getConnectPostgreSQL(connectURLPostgreSQL, Config.userPG, Config.pwPG);
-
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-        String connectURLIndextable = Config.connectURLPG + "db_Agri";
-
-        Connection connectIndextable = Connect.getConnectPostgreSQL(connectURLIndextable, Config.userPG, Config.pwPG);
-
-        List<Date> listdate = get_listDate(year + "0101", (year + 1) + "0101");
-        for (int i = 0; i < listdate.size(); i++) {
-            Date date = listdate.get(i);
-            String code = formatter.format(date) + type + id_0 + id_1 + id_2;
-            //Check overwite at this day
-            if (overwrite) {
-                get_valueIndex(connectDatatable, connectIndextable, date, id_0, id_1,id_2, type);
-            } else {
-                //Nếu không ghi đè cần check xem đã tồn tại chưa trước khi tiếp tục
-                String sqlcheck = "select count(*) from tbl_index2 where code='" + code + "'";
-                ResultSet rescheck = run_SQL(connectIndextable, sqlcheck);
-                while (rescheck.next()) {
-                    Double count = rescheck.getDouble("count");
-                    if (count > 0) {
-                        //Exist. Do nothing
-                        System.out.println(code + " is exist");
-                        try {
-                            appendToPane(Main.tbcreateindexinfor, code + " is exist " + getCurrentTimeStamp() + "\n", Color.ORANGE);
-                        } catch (Exception e) {
+        if (connectDatatable == null) {
+            connectDatatable = Connect.getConnectPostgreSQL(connectURLPostgreSQL, Config.userPG, Config.pwPG);
+            try {
+                appendToPane(Main.tbcreateindexinfor, "Could not connect to PostgreSQL" + "\n", Color.RED);
+            } catch (Exception e) {
+            }
+        } else {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            String connectURLIndextable = Config.connectURLPG + "db_Agri";
+            Connection connectIndextable = Connect.getConnectPostgreSQL(connectURLIndextable, Config.userPG, Config.pwPG);
+            List<Date> listdate = get_listDate(year + "0101", (year + 1) + "0101");
+            for (int i = 0; i < listdate.size(); i++) {
+                Date date = listdate.get(i);
+                String code = formatter.format(date) + type + id_0 + id_1 + id_2;
+                //Check overwite at this day
+                if (overwrite) {
+                    get_valueIndex(connectDatatable, connectIndextable, date, id_0, id_1, id_2, type);
+                } else {
+                    //Nếu không ghi đè cần check xem đã tồn tại chưa trước khi tiếp tục
+                    String sqlcheck = "select count(*) from tbl_index2 where code='" + code + "'";
+                    ResultSet rescheck = run_SQL(connectIndextable, sqlcheck);
+                    while (rescheck.next()) {
+                        Double count = rescheck.getDouble("count");
+                        if (count > 0) {
+                            //Exist. Do nothing
+                            System.out.println(code + " is exist");
+                            try {
+                                appendToPane(Main.tbcreateindexinfor, code + " is exist " + getCurrentTimeStamp() + "\n", Color.ORANGE);
+                            } catch (Exception e) {
+                            }
+                        } else {
+                            get_valueIndex(connectDatatable, connectIndextable, date, id_0, id_1, id_2, type);
                         }
-                    } else {
-                        get_valueIndex(connectDatatable, connectIndextable, date, id_0, id_1, id_2, type);
                     }
                 }
             }
-
+            
+            connectIndextable.close();
+            if (!connectIndextable.isClosed()) {
+                connectIndextable.close();
+            }
+            connectDatatable.close();
+            if (!connectDatatable.isClosed()) {
+                connectDatatable.close();
+            }
         }
-        connectDatatable.close();
-        connectIndextable.close();
     }
 
     //Áp dụng cho việc lấy giá trị của một tỉnh/bang tại một ngày cụ thể
